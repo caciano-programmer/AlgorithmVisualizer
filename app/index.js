@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Header from './UI/header';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import Home from './pages/home/home';
 import Path from './pages/path/path';
 import Graph from './pages/graph/graph';
@@ -12,7 +11,9 @@ import 'normalize.css';
 const App = () => (
   <React.StrictMode>
     <Router>
-      <Header />
+      <header>
+        <Link to="/">Home</Link>
+      </header>
       <Switch>
         <Route path="/" exact>
           <Home />
