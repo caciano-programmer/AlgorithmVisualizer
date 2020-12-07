@@ -1,20 +1,24 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-use-before-define */
 
 export const SORT_ALGORITHMS = {
-  SelectionSort: 'SelectionSort',
-  InsertionSort: 'InsertionSort',
-  BubbleSort: 'BubbleSort',
-  MergeSort: 'MergeSort',
-  HEAPSORT: 'HeapSort',
-  QUICKSORT: 'QuickSort',
+  SELECTION_SORT: 'SelectionSort',
+  INSERTION_SORT: 'InsertionSort',
+  BUBBLE_SORT: 'BubbleSort',
+  MERGE_SORT: 'MergeSort',
+  HEAP_SORT: 'HeapSort',
+  QUICK_SORT: 'QuickSort',
 };
 
-// Used to generate an array with custom size and custom max number limit
 export const randomArrayGenerator = (size, numMax) => {
   const nums = [];
   for (let i = 0; i < size; i++) nums.push(Math.ceil(Math.random() * numMax));
   return nums;
+};
+
+export const swap = (array, l, r, steps) => {
+  if (array.length < 2 || l === r) return;
+  if (steps !== undefined) steps.push([l, r]);
+  [array[l], array[r]] = [array[r], array[l]];
 };
 
 // ============================= Sort Functions =============================
@@ -87,12 +91,6 @@ export const heapSort = numbers => {
 
 // ============================= Sort Helper Functions =============================
 
-function swap(array, l, r, steps) {
-  if (array.length < 2 || l === r) return;
-  [array[l], array[r]] = [array[r], array[l]];
-  steps.push([l, r]);
-}
-
 function partition(nums, lower = 0, limit = nums.length - 1, steps) {
   const pivot = nums[limit];
   let upper = limit - 1;
@@ -107,10 +105,7 @@ function partition(nums, lower = 0, limit = nums.length - 1, steps) {
 
 function merge(array, start, middle, end, steps) {
   let result = [];
-  steps.push([
-    [start, middle],
-    [middle + 1, end],
-  ]);
+  steps.push([start, middle, middle + 1, end]);
   let [p1, p2] = [start, middle + 1];
   while (p1 <= middle && p2 <= end) {
     while (array[p1] <= array[p2] && p1 <= middle) result.push(array[p1++]);

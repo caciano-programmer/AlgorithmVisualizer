@@ -1,37 +1,14 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
-import Home from './pages/home/home';
-import Path from './pages/path/path';
-import Graph from './pages/graph/graph';
-import Sort from './pages/sort/sort';
+import Sort from './sort/sort';
 
 import 'normalize.css';
 
+// TODO Make sure you can exit out of current animations on button press
+// TODO Make sure to implement as PWA for offline use
 const App = () => (
   <React.StrictMode>
-    <Router>
-      <header>
-        <Link to="/">Home</Link>
-      </header>
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/path" exact>
-          <Path />
-        </Route>
-        <Route path="/graph" exact>
-          <Graph />
-        </Route>
-        <Route path="/sort" exact>
-          <Sort />
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-    </Router>
+    <Sort />
   </React.StrictMode>
 );
 
