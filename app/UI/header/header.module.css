@@ -1,0 +1,24 @@
+.container {
+  background-color: beige;
+  height: 15vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.flexItem {
+  flex-basis: 0;
+  margin-bottom: 1vh;
+  text-align: center;
+}
+.name {
+  flex-grow: 6;
+}
+.choose {
+  flex-grow: 10;
+}
+.current {
+  flex-grow: 10;
+}
+.theme {
+  flex-grow: 5;
+}

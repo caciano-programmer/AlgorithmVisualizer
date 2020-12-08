@@ -1,9 +1,12 @@
 {
-  "name": "algorithmvisualizer",
+  "name": "sorting_visualizer",
   "version": "1.0.0",
-  "description": "Web app to visually understand common algorithms",
+  "description": "Web app to visually understand common sorting algorithms",
   "main": "./app/index.js",
   "browserslist": "last 2 versions",
+  "babel": {
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --env development --config ./webpack/webpack.config.js",
@@ -12,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/caciano-programmer/AlgorithmVisualizer.git"
+    "url": "git+https://github.com/caciano-programmer/SortingVisualizer.git"
   },
   "author": "Caciano Almeida",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/caciano-programmer/AlgorithmVisualizer/issues"
+    "url": "https://github.com/caciano-programmer/SortingVisualizer/issues"
   },
-  "homepage": "https://github.com/caciano-programmer/AlgorithmVisualizer#readme",
+  "homepage": "https://github.com/caciano-programmer/SortingVisualizer#readme",
   "dependencies": {
     "normalize.css": "^8.0.1",
     "react": "^17.0.1",

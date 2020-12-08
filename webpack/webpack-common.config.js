@@ -37,6 +37,12 @@ module.exports = {
             },
           },
         ],
+        include: '/.module.css$/',
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        exclude: '/.module.css$/',
       },
     ],
   },

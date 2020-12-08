@@ -1,0 +1,15 @@
+.container {
+  height: 15vh;
+  background-color: burlywood;
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+}
+.size {
+  text-align: right;
+}
+.controls {
+    text-align: center;
+}
+.speed {
+  text-align: left;
+}

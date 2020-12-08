@@ -12,12 +12,13 @@ import {
   heapSort,
 } from './sortAlgorithms';
 
+import styles from './sort.module.css';
+
 const DEFAULT_ARRAY_SIZE = 5;
 const DEFAULT_MAX_NUMBER_VALUE = 15;
 
 export default () => {
   const [Numbers, setNumbers] = useState(randomArrayGenerator(DEFAULT_ARRAY_SIZE, DEFAULT_MAX_NUMBER_VALUE));
-  const animations = getArraySteps(Numbers, SORT_ALGORITHMS.QUICK_SORT);
   const showAnimations = steps => {
     steps.forEach((step, index) => {
       if (step.length === 2)
@@ -31,16 +32,7 @@ export default () => {
     });
   };
 
-  return (
-    <>
-      <div>
-        Array: <ul>{numbersToJsx(Numbers)}</ul>
-      </div>
-      <button onClick={() => showAnimations(animations)} type="button">
-        Click
-      </button>
-    </>
-  );
+  return <div className={styles.container}>App</div>;
 };
 
 function numbersToJsx(array) {

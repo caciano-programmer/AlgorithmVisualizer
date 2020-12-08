@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import Sort from './sort/sort';
+import Header from './UI/header/header';
+import Footer from './UI/footer/footer';
 
 import 'normalize.css';
+import './index.css';
 
-// TODO Make sure you can exit out of current animations on button press
-// TODO Make sure to implement as PWA for offline use
 const App = () => (
   <React.StrictMode>
+    <Header />
     <Sort />
+    <Footer />
   </React.StrictMode>
 );
 
