@@ -1,29 +1,25 @@
 /* eslint-disable no-param-reassign */
 
 export const SORT_ALGORITHMS = {
-  SELECTION_SORT: 'SelectionSort',
-  INSERTION_SORT: 'InsertionSort',
-  BUBBLE_SORT: 'BubbleSort',
-  MERGE_SORT: 'MergeSort',
-  HEAP_SORT: 'HeapSort',
-  QUICK_SORT: 'QuickSort',
+  SELECTION_SORT: selectionSort,
+  INSERTION_SORT: insertionSort,
+  BUBBLE_SORT: bubbleSort,
+  MERGE_SORT: mergeSort,
+  HEAP_SORT: heapSort,
+  QUICK_SORT: quickSort,
 };
 
-export const randomArrayGenerator = (size, numMax) => {
+export const randomArrayGenerator = size => {
   const nums = [];
-  for (let i = 0; i < size; i++) nums.push(Math.ceil(Math.random() * numMax));
+  const numMax = size * 5;
+  const numMin = size < 50 ? 0 : Math.floor(Math.cbrt(size));
+  for (let i = 0; i < size; i++) nums.push(Math.ceil(Math.random() * numMax) + numMin);
   return nums;
-};
-
-export const swap = (array, l, r, steps) => {
-  if (array.length < 2 || l === r) return;
-  if (steps !== undefined) steps.push([l, r]);
-  [array[l], array[r]] = [array[r], array[l]];
 };
 
 // ============================= Sort Functions =============================
 
-export const selectionSort = array => {
+function selectionSort(array) {
   const nums = [...array];
   const steps = [];
   for (let i = 0; i < nums.length; i++) {
@@ -32,25 +28,25 @@ export const selectionSort = array => {
     swap(nums, min, i, steps);
   }
   return steps;
-};
+}
 
-export const bubbleSort = array => {
+function bubbleSort(array) {
   const nums = [...array];
   const steps = [];
   for (let i = 1; i < nums.length; i++)
     for (let j = 1; j < nums.length; j++) if (nums[j] < nums[j - 1]) swap(nums, j, j - 1, steps);
   return steps;
-};
+}
 
-export const insertionSort = array => {
+function insertionSort(array) {
   const nums = [...array];
   const steps = [];
   for (let i = 1; i < nums.length; i++)
     for (let j = i; j > 0 && nums[j] < nums[j - 1]; j--) swap(nums, j - 1, j, steps);
-  return nums;
-};
+  return steps;
+}
 
-export const quickSort = numbers => {
+function quickSort(numbers) {
   const array = [...numbers];
   const steps = [];
   const sort = (nums, lower, limit) => {
@@ -62,9 +58,9 @@ export const quickSort = numbers => {
   };
   sort(array, 0, array.length - 1);
   return steps;
-};
+}
 
-export const mergeSort = numbers => {
+function mergeSort(numbers) {
   const array = [...numbers];
   const steps = [];
   const sort = (start, end) => {
@@ -76,9 +72,9 @@ export const mergeSort = numbers => {
   };
   sort(0, array.length - 1);
   return steps;
-};
+}
 
-export const heapSort = numbers => {
+function heapSort(numbers) {
   const array = [...numbers];
   const steps = [];
   for (let i = Math.floor(array.length / 2) - 1; i >= 0; i--) heapify(array, i, numbers.length - 1, steps);
@@ -87,9 +83,15 @@ export const heapSort = numbers => {
     heapify(array, 0, limit, steps);
   }
   return steps;
-};
+}
 
 // ============================= Sort Helper Functions =============================
+
+function swap(array, l, r, steps) {
+  if (array.length < 2 || l === r) return;
+  if (steps !== undefined) steps.push([l, r]);
+  [array[l], array[r]] = [array[r], array[l]];
+}
 
 function partition(nums, lower = 0, limit = nums.length - 1, steps) {
   const pivot = nums[limit];

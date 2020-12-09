@@ -5,7 +5,10 @@
   "main": "./app/index.js",
   "browserslist": "last 2 versions",
   "babel": {
-    "presets": ["@babel/preset-env", "@babel/preset-react"]
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,10 +27,10 @@
   },
   "homepage": "https://github.com/caciano-programmer/SortingVisualizer#readme",
   "dependencies": {
+    "chart.js": "^2.9.4",
     "normalize.css": "^8.0.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "uuid": "^8.3.1"
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

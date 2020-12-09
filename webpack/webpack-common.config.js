@@ -58,4 +58,7 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
   ],
+  externals: {
+    moment: 'moment',
+  },
 };
