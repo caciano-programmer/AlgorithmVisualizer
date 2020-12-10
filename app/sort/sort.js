@@ -4,12 +4,12 @@ import Chart from '../UI/chart/chart';
 import Footer from '../UI/footer/footer';
 import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
 
-const DEFAULT_SIZE = 50;
+const DEFAULT_SIZE = 100;
 const STATES = { GO: 'go', BEGINNING: 'beginning', NEXT: 'next', PREVIOUS: 'previous', STOP: 'stop', END: 'end' };
 const SPEEDS = { SLOW: 'slow', NORMAL: 'normal', FAST: 'fast' };
 
 const initialState = {
-  algorithm: SORT_ALGORITHMS.INSERTION_SORT,
+  algorithm: SORT_ALGORITHMS.HEAP_SORT,
   size: DEFAULT_SIZE,
   array: randomArrayGenerator(DEFAULT_SIZE),
   state: STATES.STOP,
