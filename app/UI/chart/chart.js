@@ -2,12 +2,13 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useLayoutEffect } from 'react';
-import Chart from 'chart.js';
+import { Chart, BarController, BarElement, LinearScale, CategoryScale } from 'chart.js';
 import { graphData, animations } from './utils';
 
 import css from './chart.module.css';
 
-export default ({ array, algorithm, state, speed }) => {
+export default ({ array, algorithm, state, speed, updateProgress }) => {
+  Chart.register(BarController, BarElement, LinearScale, CategoryScale);
   const canvasRef = React.useRef();
   const ctx = <canvas ref={canvasRef} className={css.canvas} />;
   useLayoutEffect(() => {

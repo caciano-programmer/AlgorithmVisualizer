@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 
-export const animations = (chart, algorithm, array, speed = 100, baseColor, animationColor) => {
+export const animations = (chart, algorithm, array, speed = 200, baseColor, animationColor) => {
   const steps = algorithm(array);
   const { data, backgroundColor } = chart.data.datasets[0];
 
