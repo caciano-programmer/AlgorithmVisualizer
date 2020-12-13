@@ -1,4 +1,4 @@
-export const DEFAULT_SIZE = 50;
+export const DEFAULT_ARRAY_SIZE = 50;
 
 export const STATES = {
   GO: 'go',

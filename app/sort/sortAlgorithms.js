@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 
 export const SORT_ALGORITHMS = {
-  SELECTION_SORT: selectionSort,
-  INSERTION_SORT: insertionSort,
-  BUBBLE_SORT: bubbleSort,
-  MERGE_SORT: mergeSort,
-  HEAP_SORT: heapSort,
-  QUICK_SORT: quickSort,
+  SELECTION_SORT: { name: 'Selection Sort', func: selectionSort },
+  INSERTION_SORT: { name: 'Insertion Sort', func: insertionSort },
+  BUBBLE_SORT: { name: 'Bubble Sort', func: bubbleSort },
+  MERGE_SORT: { name: 'Merge Sort', func: mergeSort },
+  HEAP_SORT: { name: 'Heap Sort', func: heapSort },
+  QUICK_SORT: { name: 'Quick Sort', func: quickSort },
 };
 
 export const randomArrayGenerator = size => {

@@ -13,7 +13,7 @@ export default ({ array, algorithm, state, speed, updateProgress }) => {
   const ctx = <canvas ref={canvasRef} className={css.canvas} />;
   useLayoutEffect(() => {
     const chart = new Chart(canvasRef.current.getContext('2d'), graphData(array));
-    animations(chart, algorithm, array);
+    animations(chart, algorithm.func, array);
     return () => chart.destroy();
   });
   return <div className={css.chartParent}>{ctx}</div>;

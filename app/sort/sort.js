@@ -1,15 +1,15 @@
 import React, { useReducer } from 'react';
 import Header from '../UI/header/header';
 import Chart from '../UI/chart/chart';
-import Footer from '../UI/controls/controls';
+import Controls from '../UI/controls/controls';
 import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
-import { DEFAULT_SIZE, SPEEDS, STATES } from './stateConstants';
+import { DEFAULT_ARRAY_SIZE, SPEEDS, STATES } from './stateConstants';
 
 const initialState = {
   algorithm: SORT_ALGORITHMS.QUICK_SORT,
-  size: DEFAULT_SIZE,
-  array: randomArrayGenerator(DEFAULT_SIZE),
-  state: STATES.STOP,
+  size: DEFAULT_ARRAY_SIZE,
+  array: randomArrayGenerator(DEFAULT_ARRAY_SIZE),
+  state: STATES.GO,
   speed: SPEEDS.NORMAL,
   progress: 0,
 };
@@ -19,7 +19,7 @@ export default () => {
 
   return (
     <React.StrictMode>
-      <Header changeAlgorithm={dispatch} />
+      <Header changeAlgorithm={dispatch} algorithm={state.algorithm} />
       <Chart
         array={state.array}
         algorithm={state.algorithm}
@@ -27,7 +27,7 @@ export default () => {
         speed={state.speed}
         updateProgress={dispatch}
       />
-      <Footer changeControls={dispatch} state={state.state} />
+      <Controls changeControls={dispatch} state={state.state} />
     </React.StrictMode>
   );
 };

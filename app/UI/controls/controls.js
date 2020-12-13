@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
-import Progress from '@material-ui/core/LinearProgress';
+import { Slider, Typography, LinearProgress as Progress } from '@material-ui/core';
 import {
   NavigateBefore,
   SkipPrevious,
