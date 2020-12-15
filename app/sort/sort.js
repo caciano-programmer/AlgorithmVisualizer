@@ -1,7 +1,9 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import Header from '../UI/header/header';
 import Chart from '../UI/chart/chart';
 import Controls from '../UI/controls/controls';
+import Mobile from '../UI/mobileSettings/mobile';
+import Code from '../UI/code/code';
 import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
 import { DEFAULT_ARRAY_SIZE, SPEEDS, STATES } from './stateConstants';
 
@@ -16,6 +18,8 @@ const initialState = {
 
 export default () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [mobile, toggleMobile] = useState(false);
+  const [code, toggleCode] = useState(false);
 
   return (
     <React.StrictMode>
@@ -27,7 +31,9 @@ export default () => {
         speed={state.speed}
         updateProgress={dispatch}
       />
-      <Controls changeControls={dispatch} state={state.state} />
+      <Controls changeControls={dispatch} state={state.state} progress={state.progress} />
+      {mobile && <Mobile settings={dispatch} toogleMobile={toggleMobile} />}
+      {code && <Code toggleCode={toggleCode} />}
     </React.StrictMode>
   );
 };

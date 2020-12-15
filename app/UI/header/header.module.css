@@ -6,19 +6,39 @@
   align-items: flex-end;
 }
 .flexItem {
-  flex-basis: 0;
   margin-bottom: 1vh;
   text-align: center;
+  flex-basis: 0;
 }
 .name {
-  flex-grow: 6;
+  flex-grow: 3;
 }
-.choose {
-  flex-grow: 10;
+.settings {
+  flex-grow: 1;
 }
-.current {
-  flex-grow: 10;
+
+@media only screen and (max-width: 767px) {
+  .choose,
+  .custom,
+  .theme {
+    display: none;
+  }
 }
-.theme {
-  flex-grow: 5;
+
+@media only screen and (min-width: 768px) {
+  .settings {
+    display: none;
+  }
+  .name {
+    flex-grow: 2;
+  }
+  .custom {
+    flex-grow: 3;
+  }
+  .theme {
+    flex-grow: 1;
+  }
+  .choose {
+    flex-grow: 1;
+  }
 }
