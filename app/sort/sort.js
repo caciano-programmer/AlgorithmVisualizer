@@ -1,54 +1,38 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import Header from '../UI/header/header';
 import Chart from '../UI/chart/chart';
 import Controls from '../UI/controls/controls';
-import Mobile from '../UI/mobileSettings/mobile';
-import Code from '../UI/code/code';
-import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
-import { DEFAULT_ARRAY_SIZE, SPEEDS, STATES } from './stateConstants';
-
-const initialState = {
-  algorithm: SORT_ALGORITHMS.QUICK_SORT,
-  size: DEFAULT_ARRAY_SIZE,
-  array: randomArrayGenerator(DEFAULT_ARRAY_SIZE),
-  state: STATES.GO,
-  speed: SPEEDS.NORMAL,
-  progress: 0,
-};
+import { randomArrayGenerator } from './sortAlgorithms';
+import { ACTIONS, InitialState } from './AppConstants';
 
 export default () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [mobile, toggleMobile] = useState(false);
-  const [code, toggleCode] = useState(false);
-
+  const [state, dispatch] = useReducer(reducer, InitialState);
   return (
     <React.StrictMode>
-      <Header changeAlgorithm={dispatch} algorithm={state.algorithm} />
+      <Header settings={dispatch} algorithm={state.algorithm} />
       <Chart
         array={state.array}
         algorithm={state.algorithm}
         state={state.state}
         speed={state.speed}
-        updateProgress={dispatch}
+        updateProgress={progress => dispatch({ type: ACTIONS.CHANGE_PROGRESS, payload: progress })}
       />
       <Controls changeControls={dispatch} state={state.state} progress={state.progress} />
-      {mobile && <Mobile settings={dispatch} toogleMobile={toggleMobile} />}
-      {code && <Code toggleCode={toggleCode} />}
     </React.StrictMode>
   );
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'change-algorithm':
+    case ACTIONS.CHANGE_ALGORITHM:
       return { ...state, algorithm: action.payload, array: randomArrayGenerator(state.size) };
-    case 'change-size':
+    case ACTIONS.CHANGE_SIZE:
       return { ...state, size: action.payload, array: randomArrayGenerator(action.payload) };
-    case 'change-speed':
+    case ACTIONS.CHANGE_SPEED:
       return { ...state, speed: action.payload };
-    case 'change-state':
+    case ACTIONS.CHANGE_STATE:
       return { ...state, state: action.payload };
-    case 'change-progress':
+    case ACTIONS.CHANGE_PROGRESS:
       return { ...state, progress: action.payload };
     default:
       throw new Error('No valid action given.');

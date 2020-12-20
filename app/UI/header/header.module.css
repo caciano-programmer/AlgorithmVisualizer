@@ -42,3 +42,26 @@
     flex-grow: 1;
   }
 }
+
+.settingsIcon {
+  animation: spinningGear 1000ms linear 1;
+}
+
+@keyframes spinningGear {
+  25% {
+    -webkit-transform: rotate(-35deg);
+    transform: rotate(-35deg);
+  }
+  50% {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+  75% {
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}

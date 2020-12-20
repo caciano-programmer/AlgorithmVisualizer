@@ -10,7 +10,7 @@ import {
   PauseCircleOutline,
   PlayCircleOutline,
 } from '@material-ui/icons';
-import { STATES } from '../../sort/stateConstants';
+import { STATES } from '../../sort/AppConstants';
 
 import styles from './controls.module.css';
 
