@@ -1,14 +1,7 @@
-/* eslint-disable react/prop-types */
-
 import React, { useState, Suspense } from 'react';
-import { Select, MenuItem, Switch, TextField, InputAdornment, Divider } from '@material-ui/core';
-import {
-  Add,
-  Settings,
-  SettingsBackupRestore as Rewind,
-  Brightness4Outlined as Moon,
-  WbSunnyOutlined as Sun,
-} from '@material-ui/icons';
+import { Switch, NativeSelect } from '@material-ui/core';
+import { Settings, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
+import { NumberInput } from '../shared/numberInput';
 import { SORT_ALGORITHMS } from '../../sort/sortAlgorithms';
 import { APP_NAME } from '../../sort/AppConstants';
 
@@ -28,23 +21,21 @@ export default ({ settings, algorithm }) => {
     <header className={styles.container}>
       <div className={`${styles.flexItem} ${styles.name}`}>{APP_NAME}</div>
       <div className={`${styles.flexItem} ${styles.choose}`}>
-        <Select
+        <NativeSelect
           value={algorithm.name}
-          MenuProps={{
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left',
-            },
-            getContentAnchorEl: null,
+          onChange={event => {
+            if (event.target.value === 'code') toggleCode(true);
           }}
         >
           {Object.values(SORT_ALGORITHMS).map(el => (
-            <MenuItem key={el.name} value={el.name} disabled={algorithm.name === el.name}>
+            <option key={el.name} value={el.name} disabled={algorithm.name === el.name}>
               {el.name}
-            </MenuItem>
+            </option>
           ))}
-          <MenuItem key="code">View Algorithm Code</MenuItem>
-        </Select>
+          <option key="code" value="code">
+            View Algorithm Code
+          </option>
+        </NativeSelect>
       </div>
       <div className={`${styles.flexItem} ${styles.custom}`}>
         <NumberInput />
@@ -63,42 +54,15 @@ export default ({ settings, algorithm }) => {
         />
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-        {code && <CodeComponent toggleCode={() => toggleCode(false)} />}
-        <MobileComponent settings={settings} toggleMobile={() => toggleMobile(false)} open={mobile} />
+        <CodeComponent toggleCode={() => toggleCode(false)} code={code} />
+        <MobileComponent
+          settings={settings}
+          toggleMobile={() => toggleMobile(false)}
+          open={mobile}
+          algorithm={algorithm.name}
+          algoList={Object.values(SORT_ALGORITHMS).map(el => el.name)}
+        />
       </Suspense>
     </header>
   );
 };
-
-function NumberInput() {
-  const isError = false;
-  return (
-    <TextField
-      error={isError}
-      helperText={isError ? 'Enter a number from 1-100.' : ''}
-      label="Custom Data:"
-      placeholder="Enter numbers from 1-100"
-      InputProps={{
-        endAdornment: (
-          <>
-            <InputAdornment>
-              <Add />
-            </InputAdornment>
-            <Divider orientation="vertical" flexItem />
-            <InputAdornment>
-              <Rewind />
-            </InputAdornment>
-          </>
-        ),
-      }}
-    />
-  );
-}
-
-function returnValidNumbers(input) {
-  return input
-    .replaceAll(',', ' ')
-    .split(' ')
-    .filter(el => /^[1-9][0-9]*$/g.test(el) && +el <= 100)
-    .map(el => +el);
-}

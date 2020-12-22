@@ -1,5 +1,11 @@
+import { Dialog, DialogContent, DialogContentText } from '@material-ui/core';
 import React from 'react';
 
-import styles from './code.module.css';
-
-export default () => <div>Code</div>;
+const Code = ({ toggleCode, code }) => (
+  <Dialog open={code} keepMounted onClose={toggleCode}>
+    <DialogContent>
+      <DialogContentText>Foo Bar</DialogContentText>
+    </DialogContent>
+  </Dialog>
+);
+export default Code;

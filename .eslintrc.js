@@ -18,5 +18,7 @@ module.exports = {
     'no-unused-vars': 'warn',
     'no-plusplus': 'off',
     'no-use-before-define': 'off',
+    'import/prefer-default-export': 'off',
+    'react/prop-types': 'off',
   },
 };
