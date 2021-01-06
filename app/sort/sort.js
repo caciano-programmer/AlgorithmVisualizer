@@ -1,40 +1,69 @@
-import React, { useReducer } from 'react';
-import Header from '../UI/header/header';
-import Chart from '../UI/chart/chart';
-import Controls from '../UI/controls/controls';
+import React, { useReducer, useState } from 'react';
+import { Header } from '../UI/header/header';
+import { MemoizedChart } from '../UI/chart/chart';
+import { Controls } from '../UI/controls/controls';
 import { randomArrayGenerator } from './sortAlgorithms';
-import { ACTIONS, InitialState } from './AppConstants';
+import { InitialState } from './AppConstants';
+import { graphData } from '../config/chartConfig';
 
-export default () => {
-  const [state, dispatch] = useReducer(reducer, InitialState);
+export const Sort = () => {
+  const [state, setState] = useState(InitialState.state);
+  const [config, dispatch] = useReducer(configReducer, InitialState.config);
+  const [algorithm, setAlgorithm] = useState(InitialState.algorithm);
+  const [progress, setProgress] = useState(InitialState.progress);
+
   return (
     <React.StrictMode>
-      <Header settings={dispatch} algorithm={state.algorithm} />
-      <Chart
-        array={state.array}
-        algorithm={state.algorithm}
-        state={state.state}
-        speed={state.speed}
-        updateProgress={progress => dispatch({ type: ACTIONS.CHANGE_PROGRESS, payload: progress })}
+      <Header
+        algorithm={algorithm}
+        speed={config.speed}
+        size={config.size}
+        setAlgorithm={newAlgorithm => setAlgorithm(newAlgorithm)}
+        setState={newState => setState(newState)}
+        setSpeed={newSpeed => {
+          dispatch({ type: 'alter-speed', payload: newSpeed });
+        }}
+        setSize={newSize => {
+          dispatch({ type: 'alter-size', payload: newSize });
+        }}
       />
-      <Controls changeControls={dispatch} state={state.state} progress={state.progress} />
+      <MemoizedChart
+        config={{ data: config.data, options: config.options }}
+        setConfig={(data, background) => {
+          dispatch({ type: 'alter-array', payload: { data, background } });
+        }}
+        algorithm={algorithm}
+        state={state}
+        speed={config.speed}
+        updateProgress={setProgress}
+        setState={newState => setState(newState)}
+      />
+      <Controls
+        state={state}
+        progress={progress}
+        size={config.size}
+        speed={config.speed}
+        setState={newState => setState(newState)}
+        setSpeed={newSpeed => {
+          dispatch({ type: 'alter-speed', payload: newSpeed });
+        }}
+        setSize={newSize => {
+          dispatch({ type: 'alter-size', payload: newSize });
+        }}
+      />
     </React.StrictMode>
   );
 };
 
-function reducer(state, action) {
+function configReducer(state, action) {
   switch (action.type) {
-    case ACTIONS.CHANGE_ALGORITHM:
-      return { ...state, algorithm: action.payload, array: randomArrayGenerator(state.size) };
-    case ACTIONS.CHANGE_SIZE:
-      return { ...state, size: action.payload, array: randomArrayGenerator(action.payload) };
-    case ACTIONS.CHANGE_SPEED:
+    case 'alter-speed':
       return { ...state, speed: action.payload };
-    case ACTIONS.CHANGE_STATE:
-      return { ...state, state: action.payload };
-    case ACTIONS.CHANGE_PROGRESS:
-      return { ...state, progress: action.payload };
+    case 'alter-size':
+      return { ...state, size: action.payload, data: graphData(randomArrayGenerator(action.payload)) };
+    case 'alter-array':
+      return { ...state, data: graphData(action.payload.data, action.payload.background) };
     default:
-      throw new Error('No valid action given.');
+      throw new Error('No valid action given');
   }
 }

@@ -13,7 +13,7 @@ const codeBundle = import('../code/code');
 const CodeComponent = React.lazy(() => codeBundle);
 const MobileComponent = React.lazy(() => mobileBundle);
 
-export default ({ settings, algorithm }) => {
+export const Header = ({ settings, algorithm }) => {
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);

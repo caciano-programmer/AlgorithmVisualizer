@@ -1,9 +1,19 @@
 import React from 'react';
-import { Slider, Typography } from '@material-ui/core';
+import { Slider, Typography, useMediaQuery } from '@material-ui/core';
 
-export const Size = ({ size = 50, css }) => (
-  <div className={css}>
-    <Typography>Size</Typography>
-    <Slider valueLabelDisplay="off" defaultValue={size} />
-  </div>
-);
+export const Size = ({ size, css, paused, setSize }) => {
+  const mediaQuery = useMediaQuery('only screen and (min-width: 768px)');
+  return (
+    <div className={css}>
+      <Typography>Size</Typography>
+      <Slider
+        valueLabelDisplay="off"
+        disabled={!paused}
+        onChange={(event, value) => setSize(value)}
+        value={size}
+        min={5}
+        max={mediaQuery ? 300 : 200}
+      />
+    </div>
+  );
+};

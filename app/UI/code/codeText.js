@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const CodeText = ({ theme }) => {
+export const CodeText = React.memo(({ theme }) => {
   SyntaxHighlighter.registerLanguage('javascript', js);
   const classes = useStyles();
   return (
@@ -28,7 +28,7 @@ export const CodeText = ({ theme }) => {
       {code()}
     </SyntaxHighlighter>
   );
-};
+});
 
 function code() {
   return `
