@@ -10,7 +10,6 @@ export const Sort = () => {
   const [state, setState] = useState(InitialState.state);
   const [config, dispatch] = useReducer(configReducer, InitialState.config);
   const [algorithm, setAlgorithm] = useState(InitialState.algorithm);
-  const [progress, setProgress] = useState(InitialState.progress);
 
   return (
     <React.StrictMode>
@@ -29,18 +28,17 @@ export const Sort = () => {
       />
       <MemoizedChart
         config={{ data: config.data, options: config.options }}
-        setConfig={(data, background) => {
-          dispatch({ type: 'alter-array', payload: { data, background } });
+        setConfig={(data, background, progress) => {
+          dispatch({ type: 'alter-array', payload: { data, background, progress } });
         }}
         algorithm={algorithm}
         state={state}
         speed={config.speed}
-        updateProgress={setProgress}
         setState={newState => setState(newState)}
       />
       <Controls
         state={state}
-        progress={progress}
+        progress={config.progress}
         size={config.size}
         speed={config.speed}
         setState={newState => setState(newState)}
@@ -55,14 +53,14 @@ export const Sort = () => {
   );
 };
 
-function configReducer(state, action) {
-  switch (action.type) {
+function configReducer(state, { type, payload }) {
+  switch (type) {
     case 'alter-speed':
-      return { ...state, speed: action.payload };
+      return { ...state, speed: payload };
     case 'alter-size':
-      return { ...state, size: action.payload, data: graphData(randomArrayGenerator(action.payload)) };
+      return { ...state, size: payload, data: graphData(randomArrayGenerator(payload)), progress: 0 };
     case 'alter-array':
-      return { ...state, data: graphData(action.payload.data, action.payload.background) };
+      return { ...state, data: graphData(payload.data, payload.background), progress: payload.progress };
     default:
       throw new Error('No valid action given');
   }

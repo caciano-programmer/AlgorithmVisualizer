@@ -7,21 +7,15 @@ import { STATES } from '../../sort/AppConstants';
 
 import css from './chart.module.css';
 
-const Chart = ({ config, setConfig, algorithm, state, speed, updateProgress, setState }) => {
+const Chart = ({ config, setConfig, algorithm, state, speed, setState }) => {
+  console.log(config.data.datasets[0].data);
   let ids = [];
   useEffect(() => {
     if (state === STATES.GO) {
-      ids = animations(
-        config,
-        setConfig,
-        algorithm.func.bind(null, config.data.datasets[0].data),
-        speed,
-        updateProgress,
-        setState,
-      );
+      ids = animations(config, setConfig, algorithm.func.bind(null, config.data.datasets[0].data), speed, setState);
     }
     return function cleanup() {
-      if (state === STATES.GO) ids.forEach(el => clearTimeout(el));
+      ids.forEach(el => clearTimeout(el));
     };
   }, [state]);
   return (

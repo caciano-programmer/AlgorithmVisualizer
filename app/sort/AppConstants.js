@@ -26,7 +26,7 @@ export const InitialState = {
     options,
     size: DEFAULT_ARRAY_SIZE,
     speed: DEFAULT_ARRAY_SPEED,
+    progress: 0,
   },
   state: STATES.STOP,
-  progress: 0,
 };
