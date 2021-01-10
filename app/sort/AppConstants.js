@@ -1,5 +1,3 @@
-// import {} from './'
-
 import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
 import { graphData, options } from '../config/chartConfig';
 
@@ -17,16 +15,17 @@ export const STATES = {
   END: 'end',
 };
 
-const data = graphData(randomArrayGenerator(DEFAULT_ARRAY_SIZE));
-
 export const InitialState = {
-  algorithm: SORT_ALGORITHMS.QUICK_SORT,
+  state: STATES.STOP,
   config: {
-    data,
+    algorithm: SORT_ALGORITHMS.QUICK_SORT,
+    data: graphData(randomArrayGenerator(DEFAULT_ARRAY_SIZE)),
     options,
     size: DEFAULT_ARRAY_SIZE,
     speed: DEFAULT_ARRAY_SPEED,
     progress: 0,
+    get steps() {
+      return this.algorithm.func(this.data.datasets[0].data);
+    },
   },
-  state: STATES.STOP,
 };

@@ -9,15 +9,16 @@ import { graphData } from '../config/chartConfig';
 export const Sort = () => {
   const [state, setState] = useState(InitialState.state);
   const [config, dispatch] = useReducer(configReducer, InitialState.config);
-  const [algorithm, setAlgorithm] = useState(InitialState.algorithm);
 
   return (
     <React.StrictMode>
       <Header
-        algorithm={algorithm}
+        algorithm={config.algorithm}
         speed={config.speed}
         size={config.size}
-        setAlgorithm={newAlgorithm => setAlgorithm(newAlgorithm)}
+        setAlgorithm={newAlgorithm => {
+          dispatch({ type: 'update-steps', payload: newAlgorithm });
+        }}
         setState={newState => setState(newState)}
         setSpeed={newSpeed => {
           dispatch({ type: 'alter-speed', payload: newSpeed });
@@ -28,10 +29,11 @@ export const Sort = () => {
       />
       <MemoizedChart
         config={{ data: config.data, options: config.options }}
-        setConfig={(data, background, progress) => {
-          dispatch({ type: 'alter-array', payload: { data, background, progress } });
+        setConfig={(data, background, progress, steps) => {
+          dispatch({ type: 'alter-array', payload: { data, background, progress, steps } });
         }}
-        algorithm={algorithm}
+        isMergeSort={config.algorithm.name === 'Merge Sort'}
+        steps={config.steps}
         state={state}
         speed={config.speed}
         setState={newState => setState(newState)}
@@ -55,12 +57,26 @@ export const Sort = () => {
 
 function configReducer(state, { type, payload }) {
   switch (type) {
+    case 'change-algorithm': {
+      const data = graphData(randomArrayGenerator(state.size));
+      const steps = state.algorithm.func(data.datasets[0].data);
+      return { ...state, algorithm: payload, data, steps, progress: 0 };
+    }
     case 'alter-speed':
       return { ...state, speed: payload };
-    case 'alter-size':
-      return { ...state, size: payload, data: graphData(randomArrayGenerator(payload)), progress: 0 };
-    case 'alter-array':
-      return { ...state, data: graphData(payload.data, payload.background), progress: payload.progress };
+    case 'alter-size': {
+      const data = graphData(randomArrayGenerator(payload));
+      const steps = state.algorithm.func(data.datasets[0].data);
+      return { ...state, size: payload, data, steps, progress: 0 };
+    }
+    case 'alter-array': {
+      return {
+        ...state,
+        data: graphData(payload.data, payload.background),
+        progress: payload.progress + state.progress >= 100 ? 100 : payload.progress + state.progress,
+        steps: payload.steps || state.steps,
+      };
+    }
     default:
       throw new Error('No valid action given');
   }

@@ -7,12 +7,11 @@ import { STATES } from '../../sort/AppConstants';
 
 import css from './chart.module.css';
 
-const Chart = ({ config, setConfig, algorithm, state, speed, setState }) => {
-  console.log(config.data.datasets[0].data);
+const Chart = ({ config, setConfig, steps, state, speed, setState, isMergeSort }) => {
   let ids = [];
   useEffect(() => {
     if (state === STATES.GO) {
-      ids = animations(config, setConfig, algorithm.func.bind(null, config.data.datasets[0].data), speed, setState);
+      ids = animations(config, setConfig, steps, speed, setState, isMergeSort);
     }
     return function cleanup() {
       ids.forEach(el => clearTimeout(el));
