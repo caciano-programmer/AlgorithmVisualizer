@@ -1,8 +1,4 @@
 import React from 'react';
-import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
-import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
-import lightStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/atelier-heath-light';
-import darkStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/an-old-hope';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -16,18 +12,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const CodeText = React.memo(({ theme }) => {
-  SyntaxHighlighter.registerLanguage('javascript', js);
   const classes = useStyles();
-  return (
-    <SyntaxHighlighter
-      language="javascript"
-      style={theme === 'light' ? lightStyle : darkStyle}
-      codeTagProps={{ className: classes.code }}
-      showLineNumbers
-    >
-      {code()}
-    </SyntaxHighlighter>
-  );
+  return <div className={classes.code}>{code()}</div>;
 });
 
 function code() {

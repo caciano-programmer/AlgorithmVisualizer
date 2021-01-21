@@ -44,7 +44,7 @@
 }
 
 .settingsIcon {
-  animation: spinningGear 1000ms linear 1;
+  animation: spinningGear 500ms linear 1;
 }
 
 @keyframes spinningGear {

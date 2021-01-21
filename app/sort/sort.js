@@ -1,55 +1,33 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import { Header } from '../UI/header/header';
 import { MemoizedChart } from '../UI/chart/chart';
 import { Controls } from '../UI/controls/controls';
-import { randomArrayGenerator } from './sortAlgorithms';
-import { InitialState } from './AppConstants';
-import { graphData } from '../config/chartConfig';
+import { InitialState, INSTRUCTIONS } from './AppConstants';
 
 export const Sort = () => {
-  const [state, setState] = useState(InitialState.state);
-  const [config, dispatch] = useReducer(configReducer, InitialState.config);
+  const [config, dispatch] = useReducer(configReducer, InitialState);
 
   return (
     <React.StrictMode>
-      <Header
-        algorithm={config.algorithm}
-        speed={config.speed}
-        size={config.size}
-        setAlgorithm={newAlgorithm => {
-          dispatch({ type: 'update-steps', payload: newAlgorithm });
-        }}
-        setState={newState => setState(newState)}
-        setSpeed={newSpeed => {
-          dispatch({ type: 'alter-speed', payload: newSpeed });
-        }}
-        setSize={newSize => {
-          dispatch({ type: 'alter-size', payload: newSize });
-        }}
-      />
+      <Header algorithm={config.algorithm} />
       <MemoizedChart
-        config={{ data: config.data, options: config.options }}
-        setConfig={(data, background, progress, steps) => {
-          dispatch({ type: 'alter-array', payload: { data, background, progress, steps } });
-        }}
-        isMergeSort={config.algorithm.name === 'Merge Sort'}
-        steps={config.steps}
-        state={state}
+        state={config.state}
+        data={config.data}
+        setData={payload => dispatch({ type: 'alter-array', payload })}
         speed={config.speed}
-        setState={newState => setState(newState)}
+        steps={config.steps}
+        pointer={config.pointer}
+        instruction={config.instruction}
       />
       <Controls
-        state={state}
+        state={config.state}
+        setState={payload => dispatch({ type: 'change-state', payload })}
         progress={config.progress}
         size={config.size}
         speed={config.speed}
-        setState={newState => setState(newState)}
-        setSpeed={newSpeed => {
-          dispatch({ type: 'alter-speed', payload: newSpeed });
-        }}
-        setSize={newSize => {
-          dispatch({ type: 'alter-size', payload: newSize });
-        }}
+        inProgress={config.inProgress}
+        instruction={config.instruction}
+        setInstruction={payload => dispatch({ type: 'instruction', payload: { type: payload, inProgress: true } })}
       />
     </React.StrictMode>
   );
@@ -57,27 +35,40 @@ export const Sort = () => {
 
 function configReducer(state, { type, payload }) {
   switch (type) {
-    case 'change-algorithm': {
-      const data = graphData(randomArrayGenerator(state.size));
-      const steps = state.algorithm.func(data.datasets[0].data);
-      return { ...state, algorithm: payload, data, steps, progress: 0 };
-    }
+    case 'change-state':
+      return { ...state, state: payload };
+    case 'instruction':
+      return instructionReducer(state, payload);
+    case 'change-algorithm':
+      return {};
     case 'alter-speed':
-      return { ...state, speed: payload };
-    case 'alter-size': {
-      const data = graphData(randomArrayGenerator(payload));
-      const steps = state.algorithm.func(data.datasets[0].data);
-      return { ...state, size: payload, data, steps, progress: 0 };
-    }
-    case 'alter-array': {
-      return {
-        ...state,
-        data: graphData(payload.data, payload.background),
-        progress: payload.progress + state.progress >= 100 ? 100 : payload.progress + state.progress,
-        steps: payload.steps || state.steps,
-      };
-    }
+      return {};
+    case 'alter-size':
+      return {};
+    case 'alter-array':
+      return { ...state, data: payload, instruction: { type: state.instruction.type, inProgress: false } };
     default:
       throw new Error('No valid action given');
+  }
+}
+
+function instructionReducer(state, payload) {
+  switch (payload.type) {
+    case INSTRUCTIONS.NEXT: {
+      const pointer =
+        state.pointer < 0 ? 0 : state.instruction.type === INSTRUCTIONS.NEXT ? state.pointer + 1 : state.pointer;
+      return pointer >= state.steps.length ? state : { ...state, pointer, instruction: payload };
+    }
+    case INSTRUCTIONS.PREVIOUS: {
+      const pointer =
+        state.pointer >= state.steps.length
+          ? state.steps.length - 1
+          : state.instruction.type === INSTRUCTIONS.PREVIOUS
+          ? state.pointer - 1
+          : state.pointer;
+      return state.pointer <= 0 ? state : { ...state, pointer, instruction: payload };
+    }
+    default:
+      throw new Error('No valid instruction given.');
   }
 }

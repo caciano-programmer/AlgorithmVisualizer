@@ -115,8 +115,11 @@ function merge(array, start, middle, end, steps) {
   }
   result = [...result, ...array.slice(p1, middle + 1), ...array.slice(p2, end + 1)];
   for (let i = start, j = 0; i <= end; i++, j++) {
-    array[i] = result[j];
-    steps.push([i, result[j]]);
+    if (array[i] !== result[j]) {
+      const previous = array[i];
+      array[i] = result[j];
+      steps.push([i, result[j], previous]);
+    }
   }
 }
 

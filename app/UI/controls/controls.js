@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinearProgress as Progress } from '@material-ui/core';
+import { IconButton, LinearProgress as Progress } from '@material-ui/core';
 import {
   NavigateBefore,
   SkipPrevious,
@@ -7,14 +7,25 @@ import {
   SkipNext,
   PauseCircleOutline,
   PlayCircleOutline,
+  Shuffle,
 } from '@material-ui/icons';
 import { Size } from '../shared/size';
 import { Speed } from '../shared/speed';
-import { STATES } from '../../sort/AppConstants';
+import { INSTRUCTIONS, STATES } from '../../sort/AppConstants';
 
 import styles from './controls.module.css';
 
-export const Controls = ({ state, progress, size, speed, setState, setSpeed, setSize }) => (
+export const Controls = ({
+  state,
+  progress,
+  size,
+  speed,
+  setState,
+  setSpeed,
+  setSize,
+  instruction,
+  setInstruction,
+}) => (
   <div className={styles.container}>
     <Size
       css={`
@@ -26,12 +37,39 @@ export const Controls = ({ state, progress, size, speed, setState, setSpeed, set
     />
     <div className={`${styles.gridItem} ${styles.controls}`}>
       <div>
-        <SkipPrevious />
-        <NavigateBefore />
-        {state === STATES.STOP && <PlayCircleOutline onClick={() => setState(STATES.GO)} />}
-        {state === STATES.GO && <PauseCircleOutline onClick={() => setState(STATES.STOP)} />}
-        <NavigateNext />
-        <SkipNext />
+        <IconButton>
+          <SkipPrevious />
+        </IconButton>
+        <IconButton
+          disabled={instruction.inProgress === true || state === STATES.GO}
+          onClick={() => setInstruction(INSTRUCTIONS.PREVIOUS)}
+        >
+          <NavigateBefore />
+        </IconButton>
+        {state === STATES.STOP && (
+          <IconButton onClick={() => setState(STATES.GO)}>
+            <PlayCircleOutline />
+          </IconButton>
+        )}
+        {state === STATES.FINISHED && (
+          <IconButton>
+            <Shuffle />
+          </IconButton>
+        )}
+        {state === STATES.GO && (
+          <IconButton onClick={() => setState(STATES.STOP)}>
+            <PauseCircleOutline />
+          </IconButton>
+        )}
+        <IconButton
+          disabled={instruction.inProgress === true || state === STATES.GO}
+          onClick={() => setInstruction(INSTRUCTIONS.NEXT)}
+        >
+          <NavigateNext />
+        </IconButton>
+        <IconButton>
+          <SkipNext />
+        </IconButton>
       </div>
     </div>
     <div className={`${styles.gridItem}`}>

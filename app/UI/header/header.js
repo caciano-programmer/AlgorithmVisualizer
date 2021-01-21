@@ -13,7 +13,7 @@ const codeBundle = import('../code/code');
 const CodeComponent = React.lazy(() => codeBundle);
 const MobileComponent = React.lazy(() => mobileBundle);
 
-export const Header = ({ settings, algorithm }) => {
+export const Header = ({ algorithm }) => {
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);
@@ -45,10 +45,10 @@ export const Header = ({ settings, algorithm }) => {
       </div>
       <div className={`${styles.flexItem} ${styles.settings}`}>
         <Settings
-          className={`${animate}`}
+          className={animate}
           onClick={() => {
-            toggleAnimate(`${styles.settingsIcon}`);
-            toggleMobile(true);
+            toggleAnimate(styles.settingsIcon);
+            setTimeout(() => toggleMobile(true), 400);
           }}
           onAnimationEnd={() => toggleAnimate('')}
         />
@@ -56,7 +56,6 @@ export const Header = ({ settings, algorithm }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <CodeComponent toggleCode={() => toggleCode(false)} code={code} />
         <MobileComponent
-          settings={settings}
           toggleMobile={() => toggleMobile(false)}
           open={mobile}
           algorithm={algorithm.name}
