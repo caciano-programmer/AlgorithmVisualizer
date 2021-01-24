@@ -2,7 +2,7 @@
   height: calc(70vh - 1px);
   width: calc(100vw - 1px);
   display: grid;
-  grid-template-columns: 10vw auto;
+  grid-template-columns: 7.5vw auto;
   grid-template-rows: 67.5vh auto;
   background-color: RGB(245, 245, 220, 0.8);
 }
@@ -18,15 +18,15 @@
   color: RGB(0, 0, 0, 0.5);
   font-size: 0.75em;
 }
-
 .ticks .tickSpace {
-  flex-grow: 1;
+  margin-top: auto;
 }
 
 .chart {
   grid-column: 2 / 2;
   display: flex;
   align-items: flex-end;
+  justify-content: space-around;
   height: 100%;
   width: calc(100% - 1px);
   border-bottom: 1px solid RGB(0, 0, 0, 0.25);
@@ -39,12 +39,8 @@
   border-left: 1px solid rgb(224, 40, 40, 0.5);
   border-top: 1px solid rgb(224, 40, 40, 0.5);
   border-right: 1px solid rgb(224, 40, 40, 0.5);
-  flex-grow: 3;
-}
-
-.barSpace {
-  max-width: calc(3% * 2 / 3);
-  flex-grow: 2;
+  flex-grow: 1;
+  margin: 0 0.075% 0 0.075%;
 }
 
 @media only screen and (min-width: 768px) {

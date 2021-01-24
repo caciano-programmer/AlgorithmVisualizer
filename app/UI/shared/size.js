@@ -12,7 +12,7 @@ export const Size = ({ size, css, paused, setSize }) => {
         onChange={(event, value) => setSize(value)}
         value={size}
         min={5}
-        max={mediaQuery ? 200 : 100}
+        max={mediaQuery ? 250 : 50}
       />
     </div>
   );

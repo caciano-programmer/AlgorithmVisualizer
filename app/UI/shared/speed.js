@@ -1,5 +1,6 @@
 import React from 'react';
 import { Slider, Typography } from '@material-ui/core';
+import { MAX_SPEED, MIN_SPEED } from '../../sort/AppConstants';
 
 export const Speed = ({ speed, css, paused, setSpeed, size }) => (
   <div className={css}>
@@ -9,8 +10,8 @@ export const Speed = ({ speed, css, paused, setSpeed, size }) => (
       value={-speed}
       onChange={(event, value) => setSpeed(-value)}
       disabled={!paused}
-      min={0 - (300 / size) * 150}
-      max={0 - (300 / size) * 25}
+      min={-MIN_SPEED(size)}
+      max={-MAX_SPEED(size)}
     />
   </div>
 );

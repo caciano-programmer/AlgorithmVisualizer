@@ -2,20 +2,21 @@ import React, { useReducer } from 'react';
 import { Header } from '../UI/header/header';
 import { MemoizedChart } from '../UI/chart/chart';
 import { Controls } from '../UI/controls/controls';
-import { InitialState, INSTRUCTIONS } from './AppConstants';
+import { findAdjustedSpeed, InitialState, INSTRUCTIONS, STATES } from './AppConstants';
+import { randomArrayGenerator } from './sortAlgorithms';
 
 export const Sort = () => {
   const [config, dispatch] = useReducer(configReducer, InitialState);
 
   return (
     <React.StrictMode>
-      <Header algorithm={config.algorithm} />
+      <Header algorithm={config.algorithm} setAlgorithm={payload => dispatch({ type: 'change-algorithm', payload })} />
       <MemoizedChart
         state={config.state}
-        data={config.data}
+        data={config.data.current}
+        steps={config.data.steps}
         setData={payload => dispatch({ type: 'alter-array', payload })}
         speed={config.speed}
-        steps={config.steps}
         pointer={config.pointer}
         instruction={config.instruction}
       />
@@ -24,49 +25,77 @@ export const Sort = () => {
         setState={payload => dispatch({ type: 'change-state', payload })}
         progress={config.progress}
         size={config.size}
+        setSize={(payload = config.size) => dispatch({ type: 'alter-size', payload })}
         speed={config.speed}
-        inProgress={config.inProgress}
+        setSpeed={payload => dispatch({ type: 'alter-speed', payload })}
         instruction={config.instruction}
-        setInstruction={payload => dispatch({ type: 'instruction', payload: { type: payload, inProgress: true } })}
+        setInstruction={payload => {
+          const inProgress = payload === INSTRUCTIONS.NEXT || payload === INSTRUCTIONS.PREVIOUS;
+          dispatch({ type: 'instruction', payload: { type: payload, inProgress } });
+        }}
       />
     </React.StrictMode>
   );
 };
-
+// FIXME add merge sort functionality
 function configReducer(state, { type, payload }) {
+  const instructionType = state.instruction.type;
+  const stepLength = state.data.steps.length;
+  let { pointer } = state;
+  const newData = (size, algorithm = state.algorithm) => algorithm.func(randomArrayGenerator(size));
+
   switch (type) {
     case 'change-state':
       return { ...state, state: payload };
     case 'instruction':
       return instructionReducer(state, payload);
-    case 'change-algorithm':
-      return {};
+    case 'change-algorithm': {
+      const data = newData(state.size, payload);
+      return { ...state, algorithm: payload, data, progress: 0, state: STATES.STOP, pointer: 0 };
+    }
     case 'alter-speed':
-      return {};
-    case 'alter-size':
-      return {};
-    case 'alter-array':
-      return { ...state, data: payload, instruction: { type: state.instruction.type, inProgress: false } };
+      return { ...state, speed: payload };
+    case 'alter-size': {
+      const speed = findAdjustedSpeed(state.size, payload, state.speed);
+      return { ...state, size: payload, data: newData(payload), state: STATES.STOP, pointer: 0, progress: 0, speed };
+    }
+    case 'alter-array': {
+      const data = { ...state.data };
+      data.current = payload;
+      if (instructionType === INSTRUCTIONS.NEXT || state.state === STATES.GO) pointer++;
+      const finishedState = pointer >= stepLength ? STATES.FINISHED : state.state;
+      const instruction = { type: instructionType, inProgress: false };
+      const progress = (pointer / stepLength) * 100;
+      return { ...state, data, pointer, state: finishedState, instruction, progress };
+    }
     default:
       throw new Error('No valid action given');
   }
 }
 
 function instructionReducer(state, payload) {
+  const stepLength = state.data.steps.length;
+  let { pointer } = state;
+
   switch (payload.type) {
     case INSTRUCTIONS.NEXT: {
-      const pointer =
-        state.pointer < 0 ? 0 : state.instruction.type === INSTRUCTIONS.NEXT ? state.pointer + 1 : state.pointer;
-      return pointer >= state.steps.length ? state : { ...state, pointer, instruction: payload };
+      if (pointer < 0) pointer = 0;
+      return pointer >= stepLength ? state : { ...state, pointer, instruction: payload };
     }
     case INSTRUCTIONS.PREVIOUS: {
-      const pointer =
-        state.pointer >= state.steps.length
-          ? state.steps.length - 1
-          : state.instruction.type === INSTRUCTIONS.PREVIOUS
-          ? state.pointer - 1
-          : state.pointer;
-      return state.pointer <= 0 ? state : { ...state, pointer, instruction: payload };
+      if (state.pointer >= stepLength) pointer = stepLength - 1;
+      pointer = state.state === STATES.FINISHED ? pointer : pointer - 1;
+      return pointer < 0 ? state : { ...state, pointer, instruction: payload, state: STATES.STOP };
+    }
+    case INSTRUCTIONS.BEGINNING: {
+      const data = { ...state.data };
+      data.current = data.start;
+      return { ...state, pointer: 0, instruction: payload, data, state: STATES.STOP };
+    }
+    case INSTRUCTIONS.END: {
+      const data = { ...state.data };
+      data.current = data.end;
+      return { ...state, pointer: stepLength, instruction: payload, data, state: STATES.FINISHED };
     }
     default:
       throw new Error('No valid instruction given.');

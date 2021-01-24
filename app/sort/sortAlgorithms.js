@@ -27,7 +27,7 @@ function selectionSort(array) {
     for (let j = i; j < nums.length; j++) if (nums[j] < nums[min]) min = j;
     swap(nums, min, i, steps);
   }
-  return steps;
+  return { steps, start: [...array], current: [...array], end: nums };
 }
 
 function bubbleSort(array) {
@@ -35,7 +35,7 @@ function bubbleSort(array) {
   const steps = [];
   for (let i = 1; i < nums.length; i++)
     for (let j = 1; j < nums.length; j++) if (nums[j] < nums[j - 1]) swap(nums, j, j - 1, steps);
-  return steps;
+  return { steps, start: [...array], current: [...array], end: nums };
 }
 
 function insertionSort(array) {
@@ -43,7 +43,7 @@ function insertionSort(array) {
   const steps = [];
   for (let i = 1; i < nums.length; i++)
     for (let j = i; j > 0 && nums[j] < nums[j - 1]; j--) swap(nums, j - 1, j, steps);
-  return steps;
+  return { steps, start: [...array], current: [...array], end: nums };
 }
 
 function quickSort(numbers) {
@@ -57,7 +57,7 @@ function quickSort(numbers) {
     }
   };
   sort(array, 0, array.length - 1);
-  return steps;
+  return { steps, start: [...numbers], current: [...numbers], end: array };
 }
 
 function mergeSort(numbers) {
@@ -71,7 +71,7 @@ function mergeSort(numbers) {
     merge(array, start, middle, end, steps);
   };
   sort(0, array.length - 1);
-  return steps;
+  return { steps, start: [...numbers], current: [...numbers], end: array };
 }
 
 function heapSort(numbers) {
@@ -82,7 +82,7 @@ function heapSort(numbers) {
     swap(array, 0, limit--, steps);
     heapify(array, 0, limit, steps);
   }
-  return steps;
+  return { steps, start: [...numbers], current: [...numbers], end: array };
 }
 
 // ============================= Sort Helper Functions =============================

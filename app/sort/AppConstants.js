@@ -1,7 +1,12 @@
 import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
 
-const DEFAULT_ARRAY_SIZE = 5;
-const DEFAULT_ARRAY_SPEED = 400;
+// Animation duration in ms
+export const MAX_SPEED = arraySize => Math.floor((10 / arraySize) * 500 + 25);
+export const MIN_SPEED = arraySize => MAX_SPEED(arraySize) * 4;
+
+const DEFAULT_ARRAY_SIZE = 25;
+const DEFAULT_ARRAY_SPEED = Math.floor(MAX_SPEED(DEFAULT_ARRAY_SIZE) * 2.5);
+const DEFAULT_ALGORITHM = SORT_ALGORITHMS.QUICK_SORT;
 
 export const APP_NAME = 'SortVisualizer';
 
@@ -12,22 +17,24 @@ export const STATES = {
 };
 
 export const INSTRUCTIONS = {
-  BEGINNING: 'beginning',
   NEXT: 'next',
   PREVIOUS: 'previous',
   END: 'end',
+  BEGINNING: 'beginning',
 };
 
 export const InitialState = {
   state: STATES.STOP,
-  algorithm: SORT_ALGORITHMS.QUICK_SORT,
-  data: randomArrayGenerator(DEFAULT_ARRAY_SIZE),
+  algorithm: DEFAULT_ALGORITHM,
+  data: DEFAULT_ALGORITHM.func(randomArrayGenerator(DEFAULT_ARRAY_SIZE)),
   size: DEFAULT_ARRAY_SIZE,
   speed: DEFAULT_ARRAY_SPEED,
   pointer: 0,
   instruction: { type: INSTRUCTIONS.BEGINNING, inProgress: false },
   progress: 0,
-  get steps() {
-    return this.algorithm.func(this.data);
-  },
+};
+
+export const findAdjustedSpeed = (arrSize, newArrSize, speed) => {
+  const percentage = speed / MAX_SPEED(arrSize);
+  return Math.floor(MAX_SPEED(newArrSize) * percentage);
 };

@@ -25,64 +25,61 @@ export const Controls = ({
   setSize,
   instruction,
   setInstruction,
-}) => (
-  <div className={styles.container}>
-    <Size
-      css={`
-        ${styles.gridItem} ${styles.size}
-      `}
-      setSize={payload => setSize(payload)}
-      paused={state === STATES.STOP}
-      size={size}
-    />
-    <div className={`${styles.gridItem} ${styles.controls}`}>
-      <div>
-        <IconButton>
-          <SkipPrevious />
-        </IconButton>
-        <IconButton
-          disabled={instruction.inProgress === true || state === STATES.GO}
-          onClick={() => setInstruction(INSTRUCTIONS.PREVIOUS)}
-        >
-          <NavigateBefore />
-        </IconButton>
-        {state === STATES.STOP && (
-          <IconButton onClick={() => setState(STATES.GO)}>
-            <PlayCircleOutline />
+}) => {
+  const busy = instruction.inProgress === true || state === STATES.GO;
+  return (
+    <div className={styles.container}>
+      <Size
+        css={`
+          ${styles.gridItem} ${styles.size}
+        `}
+        setSize={payload => setSize(payload)}
+        paused={state === STATES.STOP}
+        size={size}
+      />
+      <div className={`${styles.gridItem} ${styles.controls}`}>
+        <div>
+          <IconButton disabled={busy} onClick={() => setInstruction(INSTRUCTIONS.BEGINNING)}>
+            <SkipPrevious />
           </IconButton>
-        )}
-        {state === STATES.FINISHED && (
-          <IconButton>
-            <Shuffle />
+          <IconButton disabled={busy} onClick={() => setInstruction(INSTRUCTIONS.PREVIOUS)}>
+            <NavigateBefore />
           </IconButton>
-        )}
-        {state === STATES.GO && (
-          <IconButton onClick={() => setState(STATES.STOP)}>
-            <PauseCircleOutline />
+          {state === STATES.STOP && (
+            <IconButton onClick={() => setState(STATES.GO)}>
+              <PlayCircleOutline />
+            </IconButton>
+          )}
+          {state === STATES.FINISHED && (
+            <IconButton onClick={() => setSize()}>
+              <Shuffle />
+            </IconButton>
+          )}
+          {state === STATES.GO && (
+            <IconButton onClick={() => setState(STATES.STOP)}>
+              <PauseCircleOutline />
+            </IconButton>
+          )}
+          <IconButton disabled={busy} onClick={() => setInstruction(INSTRUCTIONS.NEXT)}>
+            <NavigateNext />
           </IconButton>
-        )}
-        <IconButton
-          disabled={instruction.inProgress === true || state === STATES.GO}
-          onClick={() => setInstruction(INSTRUCTIONS.NEXT)}
-        >
-          <NavigateNext />
-        </IconButton>
-        <IconButton>
-          <SkipNext />
-        </IconButton>
+          <IconButton disabled={busy} onClick={() => setInstruction(INSTRUCTIONS.END)}>
+            <SkipNext />
+          </IconButton>
+        </div>
       </div>
+      <div className={`${styles.gridItem}`}>
+        <Progress variant="determinate" value={progress} className={`${styles.progress}`} />
+      </div>
+      <Speed
+        css={`
+          ${styles.gridItem} ${styles.speed}
+        `}
+        setSpeed={newSpeed => setSpeed(newSpeed)}
+        paused={state === STATES.STOP}
+        size={size}
+        speed={speed}
+      />
     </div>
-    <div className={`${styles.gridItem}`}>
-      <Progress variant="determinate" value={progress} className={`${styles.progress}`} />
-    </div>
-    <Speed
-      css={`
-        ${styles.gridItem} ${styles.speed}
-      `}
-      setSpeed={newSpeed => setSpeed(newSpeed)}
-      paused={state === STATES.STOP}
-      size={size}
-      speed={speed}
-    />
-  </div>
-);
+  );
+};

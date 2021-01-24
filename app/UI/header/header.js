@@ -13,7 +13,7 @@ const codeBundle = import('../code/code');
 const CodeComponent = React.lazy(() => codeBundle);
 const MobileComponent = React.lazy(() => mobileBundle);
 
-export const Header = ({ algorithm }) => {
+export const Header = ({ algorithm, setAlgorithm }) => {
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);
@@ -25,6 +25,7 @@ export const Header = ({ algorithm }) => {
           value={algorithm.name}
           onChange={event => {
             if (event.target.value === 'code') toggleCode(true);
+            else setAlgorithm(getAlgorithm(event.target.value));
           }}
         >
           {Object.values(SORT_ALGORITHMS).map(el => (
@@ -65,3 +66,22 @@ export const Header = ({ algorithm }) => {
     </header>
   );
 };
+
+function getAlgorithm(name) {
+  switch (name) {
+    case SORT_ALGORITHMS.BUBBLE_SORT.name:
+      return SORT_ALGORITHMS.BUBBLE_SORT;
+    case SORT_ALGORITHMS.HEAP_SORT.name:
+      return SORT_ALGORITHMS.HEAP_SORT;
+    case SORT_ALGORITHMS.INSERTION_SORT.name:
+      return SORT_ALGORITHMS.INSERTION_SORT;
+    case SORT_ALGORITHMS.MERGE_SORT.name:
+      return SORT_ALGORITHMS.MERGE_SORT;
+    case SORT_ALGORITHMS.QUICK_SORT.name:
+      return SORT_ALGORITHMS.QUICK_SORT;
+    case SORT_ALGORITHMS.SELECTION_SORT.name:
+      return SORT_ALGORITHMS.SELECTION_SORT;
+    default:
+      throw new Error('No valid algorithm name given.');
+  }
+}
