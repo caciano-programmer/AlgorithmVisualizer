@@ -3,7 +3,7 @@ import { Header } from '../UI/header/header';
 import { MemoizedChart } from '../UI/chart/chart';
 import { Controls } from '../UI/controls/controls';
 import { findAdjustedSpeed, InitialState, INSTRUCTIONS, STATES } from './AppConstants';
-import { randomArrayGenerator } from './sortAlgorithms';
+import { randomArrayGenerator, SORT_ALGORITHMS } from './sortAlgorithms';
 
 export const Sort = () => {
   const [config, dispatch] = useReducer(configReducer, InitialState);
@@ -19,6 +19,7 @@ export const Sort = () => {
         speed={config.speed}
         pointer={config.pointer}
         instruction={config.instruction}
+        isMerge={config.algorithm.name === SORT_ALGORITHMS.MERGE_SORT.name}
       />
       <Controls
         state={config.state}
@@ -37,7 +38,7 @@ export const Sort = () => {
     </React.StrictMode>
   );
 };
-// FIXME add merge sort functionality
+
 function configReducer(state, { type, payload }) {
   const instructionType = state.instruction.type;
   const stepLength = state.data.steps.length;
@@ -60,8 +61,7 @@ function configReducer(state, { type, payload }) {
       return { ...state, size: payload, data: newData(payload), state: STATES.STOP, pointer: 0, progress: 0, speed };
     }
     case 'alter-array': {
-      const data = { ...state.data };
-      data.current = payload;
+      const data = { ...state.data, current: payload };
       if (instructionType === INSTRUCTIONS.NEXT || state.state === STATES.GO) pointer++;
       const finishedState = pointer >= stepLength ? STATES.FINISHED : state.state;
       const instruction = { type: instructionType, inProgress: false };
@@ -88,14 +88,12 @@ function instructionReducer(state, payload) {
       return pointer < 0 ? state : { ...state, pointer, instruction: payload, state: STATES.STOP };
     }
     case INSTRUCTIONS.BEGINNING: {
-      const data = { ...state.data };
-      data.current = data.start;
-      return { ...state, pointer: 0, instruction: payload, data, state: STATES.STOP };
+      const data = { ...state.data, current: state.data.start };
+      return { ...state, instruction: payload, data, state: STATES.STOP, pointer: 0, progress: 0 };
     }
     case INSTRUCTIONS.END: {
-      const data = { ...state.data };
-      data.current = data.end;
-      return { ...state, pointer: stepLength, instruction: payload, data, state: STATES.FINISHED };
+      const data = { ...state.data, current: state.data.end };
+      return { ...state, instruction: payload, data, state: STATES.FINISHED, progress: 100, pointer: stepLength };
     }
     default:
       throw new Error('No valid instruction given.');

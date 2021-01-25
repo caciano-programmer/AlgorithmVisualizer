@@ -1,10 +1,24 @@
 /* eslint-disable no-param-reassign */
 
-export const step = (data, setData, pointer, steps, speed, limit = 1) => {
+export const step = (data, setData, pointer, steps, speed, limit) => {
   const dataCopy = [...data];
   const id = setInterval(() => {
     const [first, second] = steps[pointer++];
     [dataCopy[first], dataCopy[second]] = [dataCopy[second], dataCopy[first]];
+    setData(dataCopy);
+    if (--limit === 0) clearInterval(id);
+  }, speed);
+  return id;
+};
+
+export const mergeStep = (data, setData, pointer, steps, speed, limit, isPrevious) => {
+  const dataCopy = [...data];
+  const id = setInterval(() => {
+    if (steps[pointer].length === 3) {
+      const [index, value, previous] = steps[pointer];
+      dataCopy[index] = isPrevious ? previous : value;
+    }
+    pointer++;
     setData(dataCopy);
     if (--limit === 0) clearInterval(id);
   }, speed);

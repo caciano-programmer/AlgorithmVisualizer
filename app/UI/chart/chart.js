@@ -2,27 +2,30 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { step, getIntervals, getTickHeight } from './utils';
+import { Spring } from 'react-spring/renderprops';
+import { step, getIntervals, getTickHeight, mergeStep } from './utils';
 import { INSTRUCTIONS, STATES } from '../../sort/AppConstants';
 
 import styles from './chart.module.css';
 
-const Chart = ({ state, data, steps, pointer, setData, speed, instruction }) => {
+const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMerge }) => {
+  const [tickHeight, setTickHeight] = useState(0);
   const intervals = getIntervals(Math.max(...data));
   const largestTick = Math.max(...intervals);
-  const [tickHeight, setTickHeight] = useState(0);
+  const stepFunc = isMerge ? mergeStep : step;
+  const { type, inProgress } = instruction;
+  const isPrevious = type === INSTRUCTIONS.PREVIOUS;
   let id = null;
 
   useEffect(() => {
     const limit = steps.length - pointer;
-    if (state === STATES.GO) id = step(data, setData, pointer, steps, speed, limit);
+    if (state === STATES.GO) id = stepFunc(data, setData, pointer, steps, speed, limit, isPrevious);
     return () => clearInterval(id);
   }, [state]);
 
   useEffect(() => {
-    const { type, inProgress } = instruction;
     if (inProgress && (type === INSTRUCTIONS.NEXT || type === INSTRUCTIONS.PREVIOUS))
-      id = step(data, setData, pointer, steps, speed);
+      id = stepFunc(data, setData, pointer, steps, speed, 1, isPrevious);
     return () => clearInterval(id);
   }, [instruction]);
 
@@ -47,16 +50,42 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction }) => 
         ))}
       </div>
       <div className={styles.chart}>
-        {data.map((el, index) => (
-          <div
-            className={styles.bar}
-            style={{ height: `${(el / largestTick) * tickHeight}px` }}
-            key={new Date().getTime() + index}
-          />
-        ))}
+        {data.map((el, index) => {
+          if ((inProgress || state === STATES.GO) && indexInsideStep(steps[pointer], index)) {
+            const value = getBarValue(steps[pointer], data, index, isPrevious, el);
+            return (
+              <Spring
+                key={new Date().getTime() + index}
+                from={{ height: `${(el / largestTick) * tickHeight}px`, backgroundColor: 'red' }}
+                to={{ height: `${(value / largestTick) * tickHeight}px`, backgroundColor: 'rgb(224, 40, 40, 0.2)' }}
+                config={{ duration: speed - 5 }}
+              >
+                {props => <div className={styles.bar} style={props} />}
+              </Spring>
+            );
+          }
+          return (
+            <div
+              className={styles.bar}
+              style={{ height: `${(el / largestTick) * tickHeight}px` }}
+              key={new Date().getTime() + index}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
 
 export const MemoizedChart = React.memo(Chart);
+
+function indexInsideStep(stepArray, index) {
+  if (stepArray.length === 4) return index >= stepArray[0] && index <= stepArray[3];
+  return stepArray[0] === index;
+}
+
+function getBarValue(stepArr, data, index, isPrevious, current) {
+  if (stepArr.length === 2) return index === stepArr[0] ? data[stepArr[1]] : data[stepArr[0]];
+  if (stepArr.length === 3) return isPrevious ? stepArr[2] : stepArr[1];
+  return current;
+}

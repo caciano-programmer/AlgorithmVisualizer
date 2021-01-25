@@ -34,7 +34,7 @@ export const Controls = ({
           ${styles.gridItem} ${styles.size}
         `}
         setSize={payload => setSize(payload)}
-        paused={state === STATES.STOP}
+        disabled={state === STATES.GO || instruction.inProgress}
         size={size}
       />
       <div className={`${styles.gridItem} ${styles.controls}`}>
@@ -76,7 +76,7 @@ export const Controls = ({
           ${styles.gridItem} ${styles.speed}
         `}
         setSpeed={newSpeed => setSpeed(newSpeed)}
-        paused={state === STATES.STOP}
+        disabled={state === STATES.GO || instruction.inProgress}
         size={size}
         speed={speed}
       />
