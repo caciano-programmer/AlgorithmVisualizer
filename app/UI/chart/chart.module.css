@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: 7.5vw auto;
   grid-template-rows: 67.5vh auto;
-  background-color: RGB(245, 245, 220, 0.8);
+  background-color: rgb(245, 245, 220, 0.8);
 }
 
 .ticks {
@@ -29,8 +29,8 @@
   justify-content: space-around;
   height: 100%;
   width: calc(100% - 1px);
-  border-bottom: 1px solid RGB(0, 0, 0, 0.25);
-  border-left: 1px solid RGB(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgb(0, 0, 0, 0.25);
+  border-left: 1px solid rgb(0, 0, 0, 0.25);
 }
 
 .bar {

@@ -3,8 +3,8 @@
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Spring } from 'react-spring/renderprops';
-import { step, getIntervals, getTickHeight, mergeStep } from './utils';
-import { INSTRUCTIONS, STATES } from '../../sort/AppConstants';
+import { step, getIntervals, getTickHeight, mergeStep, indexInsideStep, getBarValue } from './chartUtil';
+import { INSTRUCTIONS, STATES } from '../../config/AppConstants';
 
 import styles from './chart.module.css';
 
@@ -24,7 +24,7 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
   }, [state]);
 
   useEffect(() => {
-    if (inProgress && (type === INSTRUCTIONS.NEXT || type === INSTRUCTIONS.PREVIOUS))
+    if (inProgress && (type === INSTRUCTIONS.NEXT || isPrevious))
       id = stepFunc(data, setData, pointer, steps, speed, 1, isPrevious);
     return () => clearInterval(id);
   }, [instruction]);
@@ -58,7 +58,7 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
                 key={new Date().getTime() + index}
                 from={{ height: `${(el / largestTick) * tickHeight}px`, backgroundColor: 'red' }}
                 to={{ height: `${(value / largestTick) * tickHeight}px`, backgroundColor: 'rgb(224, 40, 40, 0.2)' }}
-                config={{ duration: speed - 5 }}
+                config={{ duration: speed - 2 }}
               >
                 {props => <div className={styles.bar} style={props} />}
               </Spring>
@@ -78,14 +78,3 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
 };
 
 export const MemoizedChart = React.memo(Chart);
-
-function indexInsideStep(stepArray, index) {
-  if (stepArray.length === 4) return index >= stepArray[0] && index <= stepArray[3];
-  return stepArray[0] === index;
-}
-
-function getBarValue(stepArr, data, index, isPrevious, current) {
-  if (stepArr.length === 2) return index === stepArr[0] ? data[stepArr[1]] : data[stepArr[0]];
-  if (stepArr.length === 3) return isPrevious ? stepArr[2] : stepArr[1];
-  return current;
-}

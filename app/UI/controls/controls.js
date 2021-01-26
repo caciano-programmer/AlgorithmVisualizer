@@ -11,7 +11,7 @@ import {
 } from '@material-ui/icons';
 import { Size } from '../shared/size';
 import { Speed } from '../shared/speed';
-import { INSTRUCTIONS, STATES } from '../../sort/AppConstants';
+import { INSTRUCTIONS, STATES } from '../../config/AppConstants';
 
 import styles from './controls.module.css';
 

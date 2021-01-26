@@ -9,14 +9,6 @@ export const SORT_ALGORITHMS = {
   QUICK_SORT: { name: 'Quick Sort', func: quickSort },
 };
 
-export const randomArrayGenerator = size => {
-  const nums = [];
-  const numMax = size * 5;
-  const numMin = size < 50 ? 0 : Math.floor(Math.cbrt(size));
-  for (let i = 0; i < size; i++) nums.push(Math.ceil(Math.random() * numMax) + numMin);
-  return nums;
-};
-
 // ============================= Sort Functions =============================
 
 function selectionSort(array) {
