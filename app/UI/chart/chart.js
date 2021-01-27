@@ -51,26 +51,18 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
       </div>
       <div className={styles.chart}>
         {data.map((el, index) => {
+          const key = new Date().getTime() + index;
+          const from = { height: `${(el / largestTick) * tickHeight}px`, backgroundColor: 'red' };
           if ((inProgress || state === STATES.GO) && indexInsideStep(steps[pointer], index)) {
             const value = getBarValue(steps[pointer], data, index, isPrevious, el);
+            const to = { height: `${(value / largestTick) * tickHeight}px`, backgroundColor: 'rgb(224, 40, 40, 0.2)' };
             return (
-              <Spring
-                key={new Date().getTime() + index}
-                from={{ height: `${(el / largestTick) * tickHeight}px`, backgroundColor: 'red' }}
-                to={{ height: `${(value / largestTick) * tickHeight}px`, backgroundColor: 'rgb(224, 40, 40, 0.2)' }}
-                config={{ duration: speed - 2 }}
-              >
+              <Spring key={key} from={from} to={to} config={{ duration: speed - 2 }}>
                 {props => <div className={styles.bar} style={props} />}
               </Spring>
             );
           }
-          return (
-            <div
-              className={styles.bar}
-              style={{ height: `${(el / largestTick) * tickHeight}px` }}
-              key={new Date().getTime() + index}
-            />
-          );
+          return <div className={styles.bar} style={{ height: from.height }} key={key} />;
         })}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slider, Typography } from '@material-ui/core';
-import { maxSpeed, minSpeed } from '../../sort/sortUtil';
+import { maxSpeed, minSpeed } from '../../config/AppConstants';
 
 export const Speed = ({ speed, css, disabled, setSpeed, size }) => (
   <div className={css}>

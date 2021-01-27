@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { TextField, InputAdornment, Divider, IconButton, ClickAwayListener } from '@material-ui/core';
 import { Add, Close } from '@material-ui/icons';
 
-export const NumberInput = ({ validator, setNewData, clearCustom }) => {
+export const NumberInput = ({ validator, setNewData, clearCustom, isCustom }) => {
   const clearObj = { valid: true, validNums: [] };
   const [numState, setNumState] = useState(clearObj);
   const inputRef = useRef(null);
@@ -43,7 +43,7 @@ export const NumberInput = ({ validator, setNewData, clearCustom }) => {
               </InputAdornment>
               <Divider orientation="vertical" flexItem />
               <InputAdornment>
-                <IconButton disabled={numState.validNums.length < 1} onClick={clear}>
+                <IconButton disabled={!isCustom} onClick={clear}>
                   <Close />
                 </IconButton>
               </InputAdornment>

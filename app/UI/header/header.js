@@ -13,7 +13,7 @@ const codeBundle = import('../code/code');
 const CodeComponent = React.lazy(() => codeBundle);
 const MobileComponent = React.lazy(() => mobileBundle);
 
-export const Header = ({ algorithm, setAlgorithm, setNewData, clearCustom }) => {
+export const Header = ({ algorithm, setAlgorithm, setNewData, clearCustom, isCustom }) => {
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);
@@ -40,7 +40,7 @@ export const Header = ({ algorithm, setAlgorithm, setNewData, clearCustom }) => 
         </NativeSelect>
       </div>
       <div className={`${styles.flexItem} ${styles.custom}`}>
-        <NumberInput validator={isValidNumbers} setNewData={setNewData} clearCustom={clearCustom} />
+        <NumberInput validator={isValidNumbers} setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} />
       </div>
       <div className={`${styles.flexItem} ${styles.theme}`}>
         <Switch icon={<Sun />} checkedIcon={<Moon />} />

@@ -1,10 +1,6 @@
-import { INSTRUCTIONS, STATES } from '../config/AppConstants';
-import { findAdjustedSpeed, randomArrayGenerator } from './sortUtil';
+import { InitialState, INSTRUCTIONS, randomArrayGenerator, STATES } from '../config/AppConstants';
+import { findAdjustedSpeed, getStateFromLocalStorage } from './sortUtil';
 
-/* TODO make middleware to implement persist functionality on refresh, and also implement close case
- *      in reducer, so that when close button pressed goes back to previous non custom state
- * */
-// FIXME react batching updates when speed is cranked too high
 export function configReducer(state, { type, payload }) {
   const instructionType = state.instruction.type;
   const stepLength = state.data.steps.length;
@@ -14,6 +10,8 @@ export function configReducer(state, { type, payload }) {
   const sortedState = { ...state, progress: 100, state: STATES.FINISHED };
 
   switch (type) {
+    case 'localStorage':
+      return payload === null ? state : payload;
     case 'change-state':
       return noSteps ? sortedState : { ...state, state: payload };
     case 'instruction':
@@ -23,31 +21,39 @@ export function configReducer(state, { type, payload }) {
       return { ...state, algorithm: payload, data, progress: 0, state: STATES.STOP, pointer: 0 };
     }
     case 'new-data': {
+      const overflow = payload.length > 100 || (state.custom && state.data.current.length + payload.length > 100);
       const current = state.custom ? [...state.data.current, ...payload] : [...payload];
       const data = { ...state.algorithm.func(current), current };
       const size = data.start.length;
       const speed = findAdjustedSpeed(state.size, size, state.speed);
-      return { ...state, data, size, speed, state: STATES.STOP, pointer: 0, progress: 0, custom: true };
+      return overflow
+        ? state
+        : { ...state, data, size, speed, state: STATES.STOP, pointer: 0, progress: 0, custom: true };
     }
-    case 'clear-custom':
-      return {};
+    case 'clear-custom': {
+      const persistedState = getStateFromLocalStorage();
+      return persistedState === null ? InitialState : persistedState;
+    }
     case 'alter-speed':
       return { ...state, speed: payload };
     case 'alter-size': {
-      const data = payload === state.size ? random(payload, state.data.start) : random(payload);
-      const speed = findAdjustedSpeed(state.size, payload, state.speed);
-      return { ...state, size: payload, data, state: STATES.STOP, pointer: 0, progress: 0, speed, custom: false };
+      let size = payload;
+      if (state.custom && size < 5) size = 5;
+      const shuffle = !state.custom && size === state.size;
+      const data = shuffle ? random(size, state.data.start) : random(size);
+      const speed = findAdjustedSpeed(state.size, size, state.speed);
+      return { ...state, size, data, state: STATES.STOP, pointer: 0, progress: 0, speed, custom: false };
     }
     case 'alter-array': {
       const data = { ...state.data, current: payload };
       if (instructionType === INSTRUCTIONS.NEXT || state.state === STATES.GO) pointer++;
       const finishedState = pointer >= stepLength ? STATES.FINISHED : state.state;
       const instruction = { type: instructionType, inProgress: false };
-      const progress = (pointer / stepLength) * 100;
+      const progress = Math.round((pointer / stepLength) * 100);
       return { ...state, data, pointer, state: finishedState, instruction, progress };
     }
     default:
-      throw new Error('No valid action given');
+      return InitialState;
   }
 }
 
