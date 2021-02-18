@@ -18,18 +18,3 @@ export function getAlgorithm(name) {
       throw new Error('No valid algorithm name given.');
   }
 }
-
-export function isValidNumbers(input) {
-  let valid = true;
-  const stripped = input.replaceAll(',', ' ').trim();
-  if (stripped.length === 0) return { valid, validNums: [] };
-  const validNums = stripped
-    .split(/\s+/)
-    .filter(el => {
-      const validEl = /^[1-9][0-9]*$/g.test(el) && +el <= 100;
-      if (!validEl) valid = false;
-      return validEl;
-    })
-    .map(el => +el);
-  return { valid, validNums: valid ? validNums : [] };
-}

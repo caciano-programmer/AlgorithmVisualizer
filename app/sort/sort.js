@@ -20,6 +20,12 @@ export const Sort = () => {
         setNewData={payload => dispatch({ type: 'new-data', payload })}
         isCustom={config.custom}
         clearCustom={() => dispatch({ type: 'clear-custom' })}
+        size={config.size}
+        setSize={(payload = config.size) => dispatch({ type: 'alter-size', payload })}
+        speed={config.speed}
+        setSpeed={payload => dispatch({ type: 'alter-speed', payload })}
+        state={config.state}
+        setState={payload => dispatch({ type: 'change-state', payload })}
       />
       <MemoizedChart
         state={config.state}

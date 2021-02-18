@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { TextField, InputAdornment, Divider, IconButton, ClickAwayListener } from '@material-ui/core';
 import { Add, Close } from '@material-ui/icons';
+import { isValidNumbers } from './util';
 
-export const NumberInput = ({ validator, setNewData, clearCustom, isCustom }) => {
+export const NumberInput = ({ setNewData, clearCustom, isCustom }) => {
   const clearObj = { valid: true, validNums: [] };
   const [numState, setNumState] = useState(clearObj);
   const inputRef = useRef(null);
@@ -31,7 +32,7 @@ export const NumberInput = ({ validator, setNewData, clearCustom, isCustom }) =>
         placeholder="Enter numbers from 1-100"
         size="small"
         inputRef={inputRef}
-        onChange={event => setNumState({ ...validator(event.target.value) })}
+        onChange={event => setNumState({ ...isValidNumbers(event.target.value) })}
         InputProps={{
           inputProps: { maxLength: 20 },
           endAdornment: (

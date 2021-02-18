@@ -41,7 +41,7 @@ export const getTickHeight = () => {
   return bottomTick.top - topTick.top;
 };
 
-export function indexInsideStep(stepArray, index,) {
+export function indexInsideStep(stepArray, index) {
   if (stepArray === undefined) return false;
   if (stepArray.length === 3) return index === stepArray[0];
   if (stepArray.length === 4) return index >= stepArray[0] && index <= stepArray[3];

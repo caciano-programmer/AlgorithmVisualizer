@@ -7,7 +7,7 @@ export const maxSpeed = arraySize => Math.floor((10 / arraySize) * 300 + 20);
 export const minSpeed = arraySize => maxSpeed(arraySize) * 8;
 
 const DEFAULT_ARRAY_SIZE = 25;
-const DEFAULT_ARRAY_SPEED = Math.floor(maxSpeed(DEFAULT_ARRAY_SIZE) * 2.5);
+const DEFAULT_ARRAY_SPEED = Math.floor(maxSpeed(DEFAULT_ARRAY_SIZE) * 4);
 const DEFAULT_ALGORITHM = SORT_ALGORITHMS.QUICK_SORT;
 
 export const LocalStorageState = 'SortVisualizerPersistedState';

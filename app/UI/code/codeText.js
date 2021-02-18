@@ -13,7 +13,13 @@ const useStyles = makeStyles(() => ({
 
 export const CodeText = React.memo(({ theme }) => {
   const classes = useStyles();
-  return <div className={classes.code}>{code()}</div>;
+  return (
+    <pre>
+      <code>
+        <div className={classes.code}>{code()}</div>
+      </code>
+    </pre>
+  );
 });
 
 function code() {

@@ -43,7 +43,7 @@ const Code = ({ toggleCode, code, theme }) => {
             Algorithms
           </Typography>
           <div className={`${classes.root} ${classes.close}`}>
-            <IconButton>
+            <IconButton onClick={toggleCode}>
               <Close classes={{ root: classes.icon }} />
             </IconButton>
           </div>
