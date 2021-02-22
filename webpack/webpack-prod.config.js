@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -7,6 +8,7 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
     },
-    minimizer: [new CssMinimizerPlugin()],
+    minimize: true,
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
   },
 };

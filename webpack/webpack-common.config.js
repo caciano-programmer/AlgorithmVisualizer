@@ -4,10 +4,20 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
+const Dest = path.resolve(__dirname, './../dist');
+const App = path.resolve(__dirname, './../app');
 
 module.exports = {
-  entry: path.resolve(__dirname, './../app/index.js'),
-  output: { path: path.resolve(__dirname, './../dist') },
+  entry: {
+    app: `${App}/index.js`,
+    serviceWorker: `${App}/serviceWorker.js`,
+  },
+  output: {
+    filename: '[name].js',
+    path: Dest,
+  },
   module: {
     rules: [
       {
@@ -49,13 +59,20 @@ module.exports = {
   plugins: [
     new ESLintPlugin(),
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, './../app/index.html'),
+      template: `${App}/index.html`,
       filename: 'index.html',
+      excludeChunks: ['serviceWorker'],
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: `${App}/manifest.json`, to: Dest },
+        { from: `${App}/icons`, to: `${Dest}/icons` },
+      ],
     }),
   ],
   externals: {
