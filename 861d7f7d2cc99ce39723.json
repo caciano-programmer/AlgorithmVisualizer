@@ -1,8 +1,8 @@
 {
   "name": "Sorting Visualizer",
   "short_name": "SortViz",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "theme_color": "#3e3f40",
   "background_color": "#c7c7c7",
   "description": "App to visualize and interact with some of the more popular sorting algorithms commonly used.",
