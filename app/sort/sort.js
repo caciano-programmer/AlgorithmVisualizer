@@ -12,6 +12,9 @@ export const Sort = () => {
 
   useEffect(() => dispatch({ type: 'localStorage', payload: getStateFromLocalStorage() }), [dispatch]);
 
+  // FIXME fix browser makes double requests when compression files are sent
+  // FIXME fix sometimes on refresh bar heights are 0
+
   return (
     <>
       <Header

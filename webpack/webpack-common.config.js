@@ -1,4 +1,7 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
+
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
@@ -8,14 +11,25 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const Dest = path.resolve(__dirname, './../dist');
 const App = path.resolve(__dirname, './../app');
+function FilesListPlugin() {}
+FilesListPlugin.prototype.apply = compiler => {
+  compiler.hooks.emit.tapAsync('FileListPlugin', (compilation, callback) => {
+    const filelist = Object.keys(compilation.assets).map(fileName => `'${fileName}'`);
+    compilation.assets['filesList.js'] = {
+      source: () => `const getFilesList = () => [${filelist}]`,
+      size: () => filelist.length,
+    };
+    callback();
+  });
+};
 
 module.exports = {
   entry: {
-    app: `${App}/index.js`,
+    app: [`${App}/index.js`],
     serviceWorker: `${App}/serviceWorker.js`,
   },
   output: {
-    filename: '[name].js',
+    filename: filePath => (filePath.chunk.name === 'serviceWorker' ? '[name].js' : '[name].[contenthash].js'),
     path: Dest,
   },
   module: {
@@ -62,20 +76,16 @@ module.exports = {
       template: `${App}/index.html`,
       filename: 'index.html',
       excludeChunks: ['serviceWorker'],
+      favicon: `${App}/public/favicon/leaderboard16.png`,
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[contenthash].css',
       chunkFilename: '[id].css',
     }),
     new CopyPlugin({
-      patterns: [
-        { from: `${App}/manifest.json`, to: Dest },
-        { from: `${App}/icons`, to: `${Dest}/icons` },
-      ],
+      patterns: [{ from: `${App}/public/icons`, to: `${Dest}/icons` }],
     }),
+    new FilesListPlugin(),
   ],
-  externals: {
-    moment: 'moment',
-  },
 };
