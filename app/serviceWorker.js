@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 
 importScripts('filesList.js');
-const files = ['/', '/icons/', '/filesList.js', ...getFilesList()].filter(file => !/^.*serviceWorker.*$/.test(file));
+const files = ['/', 'icons/', 'filesList.js', ...getFilesList()].filter(file => !/^.*serviceWorker.*$/.test(file));
 
 self.addEventListener('install', event => {
   self.skipWaiting();
