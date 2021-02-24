@@ -11,7 +11,7 @@ export function configReducer(state, { type, payload }) {
 
   switch (type) {
     case 'localStorage':
-      return payload === null ? state : payload;
+      return payload || state;
     case 'change-state':
       return noSteps ? sortedState : { ...state, state: payload };
     case 'instruction':

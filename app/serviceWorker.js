@@ -2,23 +2,22 @@
 /* eslint-disable no-undef */
 
 importScripts('filesList.js');
-const files = ['/', 'icons/', 'filesList.js', ...getFilesList()].filter(file => !/^.*serviceWorker.*$/.test(file));
+const files = ['/', 'filesList.js', ...getFilesList()]
+  .filter(file => !/^.*serviceWorker.*$/.test(file))
+  .map(file => (file === '/' ? `.${file}` : `./${file}`));
 
-self.addEventListener('install', event => {
+addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(caches.open('SortVis').then(cache => cache.addAll(files)));
 });
 
-addEventListener('activate', event => {
-  event.waitUntil(clients.claim());
-});
+addEventListener('activate', event => event.waitUntil(clients.claim()));
 
-addEventListener('fetch', event => {
+addEventListener('fetch', event =>
   event.respondWith(
     (async () => {
       const cachedResponse = await caches.match(event.request);
-      if (cachedResponse) return cachedResponse;
-      return fetch(event.request);
+      return cachedResponse || fetch(event.request);
     })(),
-  );
-});
+  ),
+);

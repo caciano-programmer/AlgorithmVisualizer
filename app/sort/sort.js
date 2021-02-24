@@ -5,15 +5,12 @@ import { Controls } from '../UI/controls/controls';
 import { InitialState, INSTRUCTIONS } from '../config/AppConstants';
 import { SORT_ALGORITHMS } from './sortAlgorithms';
 import { configReducer } from './sortReducer';
-import { useReducerMiddleware, saveLocalStorage, getStateFromLocalStorage } from './sortUtil';
+import { useReducerMiddleware, saveLocalStorage, intercept, getStateFromLocalStorage } from './sortUtil';
 
 export const Sort = () => {
   const [config, dispatch] = useReducerMiddleware(InitialState, configReducer, saveLocalStorage);
 
-  useEffect(() => dispatch({ type: 'localStorage', payload: getStateFromLocalStorage() }), [dispatch]);
-
-  // FIXME fix browser makes double requests when compression files are sent
-  // FIXME fix sometimes on refresh bar heights are 0
+  useEffect(() => intercept(getStateFromLocalStorage, dispatch, 'localStorage'), []);
 
   return (
     <>

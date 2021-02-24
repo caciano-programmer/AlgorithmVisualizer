@@ -21,5 +21,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/prop-types': 'off',
     'no-nested-ternary': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 };

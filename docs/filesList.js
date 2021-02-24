@@ -1,1 +1,0 @@
-const getFilesList = () => ['4fa03a07ebbd8345d244.json','serviceWorker.js','585.js','352.js','395.js','icons/leaderboard.webp','icons/leaderboard192.png','icons/leaderboard512.png','leaderboard16.png','index.html','app.a99fb1f22ab6d3face3d.css','app.880f45131f0a357b2d33.js','198.589fef497469fd6c1b5b.js']

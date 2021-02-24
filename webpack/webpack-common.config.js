@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const Dest = path.resolve(__dirname, './../docs');
+const Dest = path.resolve(__dirname, './../dist');
 const App = path.resolve(__dirname, './../app');
 function FilesListPlugin() {}
 FilesListPlugin.prototype.apply = compiler => {

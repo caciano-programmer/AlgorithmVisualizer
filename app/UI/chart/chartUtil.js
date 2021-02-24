@@ -35,12 +35,6 @@ export const getIntervals = num => {
   return intervals;
 };
 
-export const getTickHeight = () => {
-  const topTick = document.getElementById('topTick').getBoundingClientRect();
-  const bottomTick = document.getElementById('bottomTick').getBoundingClientRect();
-  return bottomTick.top - topTick.top;
-};
-
 export function indexInsideStep(stepArray, index) {
   if (stepArray === undefined) return false;
   if (stepArray.length === 3) return index === stepArray[0];
