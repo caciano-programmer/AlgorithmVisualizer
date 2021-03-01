@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
 
 const Code = ({ toggleCode, code, theme }) => {
   const classes = useStyles();
-  const mediaQuery = useMediaQuery('only screen and (min-width: 768px)');
+  const mediaQuery = useMediaQuery('only screen and (min-width: 1050px)');
   return (
     <Dialog open={code} keepMounted onClose={toggleCode} fullScreen>
       <AppBar position="relative">

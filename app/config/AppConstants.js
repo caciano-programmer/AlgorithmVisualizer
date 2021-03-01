@@ -1,4 +1,5 @@
 import { SORT_ALGORITHMS } from '../sort/sortAlgorithms';
+import { themes } from '../theme/theme';
 
 export const APP_NAME = 'SortVisualizer';
 
@@ -28,6 +29,7 @@ export const INSTRUCTIONS = {
 export const randomArrayGenerator = (size, array) => (array === undefined ? random(size) : shuffle(array));
 
 export const InitialState = {
+  theme: themes.dark,
   state: STATES.STOP,
   algorithm: DEFAULT_ALGORITHM,
   data: DEFAULT_ALGORITHM.func(randomArrayGenerator(DEFAULT_ARRAY_SIZE)),

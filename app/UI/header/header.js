@@ -1,10 +1,11 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useContext } from 'react';
 import { Switch, NativeSelect } from '@material-ui/core';
 import { Settings, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
 import { NumberInput } from '../shared/numberInput';
 import { SORT_ALGORITHMS } from '../../sort/sortAlgorithms';
 import { APP_NAME, STATES } from '../../config/AppConstants';
 import { getAlgorithm } from './headerUtil';
+import { MyTheme } from '../../theme/theme';
 
 import styles from './header.module.css';
 
@@ -24,14 +25,21 @@ export const Header = ({
   speed,
   setSpeed,
   setState,
+  toggleTheme,
 }) => {
+  const theme = useContext(MyTheme);
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);
 
   return (
-    <header className={styles.container}>
-      <div className={`${styles.flexItem} ${styles.name}`}>{APP_NAME}</div>
+    <header className={styles.container} style={{ backgroundColor: theme.background }}>
+      <div
+        className={`${styles.flexItem} ${styles.name}`}
+        style={{ color: theme.brand, textShadow: theme.brandShadow }}
+      >
+        {APP_NAME}
+      </div>
       <div className={`${styles.flexItem} ${styles.choose}`}>
         <NativeSelect
           value={algorithm.name}
@@ -54,7 +62,7 @@ export const Header = ({
         <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} />
       </div>
       <div className={`${styles.flexItem} ${styles.theme}`}>
-        <Switch icon={<Sun />} checkedIcon={<Moon />} />
+        <Switch icon={<Sun />} checkedIcon={<Moon />} onChange={toggleTheme} />
       </div>
       <div className={`${styles.flexItem} ${styles.settings}`}>
         <Settings

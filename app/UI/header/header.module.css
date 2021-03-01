@@ -1,23 +1,32 @@
 .container {
-  background-color: beige;
   height: 15vh;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
 }
+.choose,
+.custom,
+.theme,
+.settings {
+  text-align: center;
+}
 .flexItem {
   margin-bottom: 1vh;
-  text-align: center;
   flex-basis: 0;
 }
 .name {
   flex-grow: 3;
+  font-size: 2.25em;
+  text-align: left;
+  padding-left: 5%;
+  font-weight: 600;
+  font-family: 'Lobster Two', cursive;
 }
 .settings {
   flex-grow: 1;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 1049px) {
   .choose,
   .custom,
   .theme {
@@ -25,9 +34,10 @@
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1050px) {
   .settings {
     display: none;
+    font-size: 3em;
   }
   .name {
     flex-grow: 2;

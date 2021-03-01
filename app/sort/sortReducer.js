@@ -1,4 +1,5 @@
 import { InitialState, INSTRUCTIONS, randomArrayGenerator, STATES } from '../config/AppConstants';
+import { themes } from '../theme/theme';
 import { findAdjustedSpeed, getStateFromLocalStorage } from './sortUtil';
 
 export function configReducer(state, { type, payload }) {
@@ -10,6 +11,10 @@ export function configReducer(state, { type, payload }) {
   const sortedState = { ...state, progress: 100, state: STATES.FINISHED };
 
   switch (type) {
+    case 'toggle-theme': {
+      const theme = state.theme === themes.dark ? themes.light : themes.dark;
+      return { ...state, state: STATES.STOP, theme };
+    }
     case 'localStorage':
       return payload || state;
     case 'change-state':

@@ -2,7 +2,7 @@ import React from 'react';
 import { Slider, Typography, useMediaQuery } from '@material-ui/core';
 
 export const Size = ({ size, css, disabled, setSize }) => {
-  const mediaQuery = useMediaQuery('only screen and (min-width: 768px)');
+  const mediaQuery = useMediaQuery('only screen and (min-width: 1050px)');
   return (
     <div className={css}>
       <Typography>Size</Typography>

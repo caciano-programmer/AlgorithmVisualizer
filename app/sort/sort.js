@@ -6,6 +6,7 @@ import { InitialState, INSTRUCTIONS } from '../config/AppConstants';
 import { SORT_ALGORITHMS } from './sortAlgorithms';
 import { configReducer } from './sortReducer';
 import { useReducerMiddleware, saveLocalStorage, intercept, getStateFromLocalStorage } from './sortUtil';
+import { MyTheme } from '../theme/theme';
 
 export const Sort = () => {
   const [config, dispatch] = useReducerMiddleware(InitialState, configReducer, saveLocalStorage);
@@ -13,7 +14,7 @@ export const Sort = () => {
   useEffect(() => intercept(getStateFromLocalStorage, dispatch, 'localStorage'), []);
 
   return (
-    <>
+    <MyTheme.Provider value={config.theme}>
       <Header
         algorithm={config.algorithm}
         setAlgorithm={payload => dispatch({ type: 'change-algorithm', payload })}
@@ -26,6 +27,7 @@ export const Sort = () => {
         setSpeed={payload => dispatch({ type: 'alter-speed', payload })}
         state={config.state}
         setState={payload => dispatch({ type: 'change-state', payload })}
+        toggleTheme={() => dispatch({ type: 'toggle-theme' })}
       />
       <MemoizedChart
         state={config.state}
@@ -51,6 +53,6 @@ export const Sort = () => {
           dispatch({ type: 'instruction', payload: { type: payload, inProgress } });
         }}
       />
-    </>
+    </MyTheme.Provider>
   );
 };
