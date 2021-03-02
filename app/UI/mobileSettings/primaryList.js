@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExpandMore, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
+import { KeyboardArrowRight, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
 import { Divider, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import { NumberInput } from '../shared/numberInput';
 import { Speed } from '../shared/speed';
@@ -44,7 +44,7 @@ export const PrimaryList = ({
       <Divider />
       <ListItem button onClick={() => toggleAlgoOptions(!algoOptions)}>
         <ListItemText primary="Change Algorithm" />
-        {!algoOptions && <ExpandMore />}
+        {!algoOptions && <KeyboardArrowRight />}
       </ListItem>
       <ListItem button>
         <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} />

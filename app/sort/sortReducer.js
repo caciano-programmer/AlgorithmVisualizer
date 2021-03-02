@@ -12,7 +12,7 @@ export function configReducer(state, { type, payload }) {
 
   switch (type) {
     case 'toggle-theme': {
-      const theme = state.theme === themes.dark ? themes.light : themes.dark;
+      const theme = state.theme.isDark ? themes.light : themes.dark;
       return { ...state, state: STATES.STOP, theme };
     }
     case 'localStorage':
