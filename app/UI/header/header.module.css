@@ -1,7 +1,8 @@
 .container {
+  width: 100vw;
   height: 15vh;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-end;
 }
 .choose,
@@ -41,15 +42,20 @@
   }
   .name {
     flex-grow: 2;
+    margin-bottom: 2.5vh;
   }
   .custom {
-    flex-grow: 3;
-  }
-  .theme {
-    flex-grow: 1;
+    flex-grow: 3.5;
+    margin-bottom: 3.5vh;
   }
   .choose {
-    flex-grow: 1;
+    flex-grow: 1.125;
+    margin-bottom: 3.5vh;
+  }
+  .theme {
+    flex-grow: 1.5;
+    margin-bottom: 2.5vh;
+    margin-right: 2vw;
   }
 }
 

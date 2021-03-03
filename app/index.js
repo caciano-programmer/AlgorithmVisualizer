@@ -7,10 +7,10 @@ import 'normalize.css';
 import './index.css';
 
 ReactDom.render(
-  <ErrorBoundary>
-    <React.StrictMode>
+  <React.StrictMode>
+    <ErrorBoundary>
       <Sort />
-    </React.StrictMode>
-  </ErrorBoundary>,
+    </ErrorBoundary>
+  </React.StrictMode>,
   document.getElementById('root'),
 );

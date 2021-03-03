@@ -20,7 +20,7 @@ export const Sort = () => {
         setAlgorithm={payload => dispatch({ type: 'change-algorithm', payload })}
         setNewData={payload => dispatch({ type: 'new-data', payload })}
         isCustom={config.custom}
-        clearCustom={() => dispatch({ type: 'clear-custom' })}
+        clearCustom={() => intercept(getStateFromLocalStorage, dispatch, 'clear-custom')}
         size={config.size}
         setSize={(payload = config.size) => dispatch({ type: 'alter-size', payload })}
         speed={config.speed}

@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 
 export const SORT_ALGORITHMS = {
-  SELECTION_SORT: { name: 'Selection Sort', func: selectionSort },
-  INSERTION_SORT: { name: 'Insertion Sort', func: insertionSort },
-  BUBBLE_SORT: { name: 'Bubble Sort', func: bubbleSort },
-  MERGE_SORT: { name: 'Merge Sort', func: mergeSort },
   HEAP_SORT: { name: 'Heap Sort', func: heapSort },
+  INSERTION_SORT: { name: 'Insertion Sort', func: insertionSort },
+  MERGE_SORT: { name: 'Merge Sort', func: mergeSort },
+  BUBBLE_SORT: { name: 'Bubble Sort', func: bubbleSort },
+  SELECTION_SORT: { name: 'Selection Sort', func: selectionSort },
   QUICK_SORT: { name: 'Quick Sort', func: quickSort },
 };
 

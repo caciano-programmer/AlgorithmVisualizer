@@ -11,7 +11,8 @@ export const themes = {
     get brandShadow() {
       return `0 0 1px ${this.brand}`;
     },
-    select: 'white',
+    select: { color: 'white', optionsBackground: '#616161', optionsHighlight: '#757575', heading: '#3d3d3d' },
+    input: { color: 'white', hover: 'rgba(255, 255, 255, .04)', disabled: 'rgba(255, 255, 255, .35)' },
   },
   light: {
     type: 'light',
@@ -23,7 +24,8 @@ export const themes = {
     get brandShadow() {
       return `0 0 1px ${this.brand}`;
     },
-    select: '#083a8c',
+    select: { color: '#083a8c', optionsBackground: '#e0e0e0', optionsHighlight: '#bdbdbd', heading: '#000544' },
+    input: { color: '#083a8c', hover: 'rgba(8, 58, 140, .04)', disabled: 'rgba(8, 58, 140, .35)' },
   },
 };
 

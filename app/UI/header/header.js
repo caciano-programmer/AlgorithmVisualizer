@@ -1,5 +1,5 @@
 import React, { useState, Suspense, useContext } from 'react';
-import { Switch } from '@material-ui/core';
+import { makeStyles, Switch } from '@material-ui/core';
 import { Settings, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
 import { NumberInput } from '../shared/numberInput';
 import { APP_NAME, STATES } from '../../config/AppConstants';
@@ -12,6 +12,18 @@ const mobileBundle = import('../mobileSettings/mobile');
 const codeBundle = import('../code/code');
 const CodeComponent = React.lazy(() => codeBundle);
 const MobileComponent = React.lazy(() => mobileBundle);
+const useStyles = theme =>
+  makeStyles({
+    track: {
+      backgroundColor: `${theme.brand} !important`,
+    },
+    hover: {
+      '&:hover': {
+        backgroundColor: `transparent !important`,
+        '&.MuiSwitch-colorSecondary&.Mui-checked': { color: `${theme.brand} !important` },
+      },
+    },
+  });
 
 export const Header = ({
   algorithm,
@@ -30,6 +42,7 @@ export const Header = ({
   const [animate, toggleAnimate] = useState('');
   const [code, toggleCode] = useState(false);
   const [mobile, toggleMobile] = useState(false);
+  const classes = useStyles(theme)();
 
   return (
     <header className={styles.container} style={{ backgroundColor: theme.background }}>
@@ -43,10 +56,16 @@ export const Header = ({
         <AlgorithmSelect theme={theme} setAlgorithm={setAlgorithm} algorithm={algorithm} toggleCode={toggleCode} />
       </div>
       <div className={`${styles.flexItem} ${styles.custom}`}>
-        <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} />
+        <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} theme={theme} />
       </div>
       <div className={`${styles.flexItem} ${styles.theme}`}>
-        <Switch icon={<Sun />} checkedIcon={<Moon />} onChange={toggleTheme} checked={theme.isDark} />
+        <Switch
+          icon={<Sun style={{ fill: theme.brand }} />}
+          checkedIcon={<Moon style={{ fill: theme.brand }} />}
+          onChange={toggleTheme}
+          checked={theme.isDark}
+          classes={{ track: classes.track, switchBase: classes.hover }}
+        />
       </div>
       <div className={`${styles.flexItem} ${styles.settings}`}>
         <Settings

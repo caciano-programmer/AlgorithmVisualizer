@@ -35,10 +35,8 @@ export function configReducer(state, { type, payload }) {
         ? state
         : { ...state, data, size, speed, state: STATES.STOP, pointer: 0, progress: 0, custom: true };
     }
-    case 'clear-custom': {
-      const persistedState = getStateFromLocalStorage();
-      return persistedState === null ? InitialState : persistedState;
-    }
+    case 'clear-custom':
+      return payload || InitialState;
     case 'alter-speed':
       return { ...state, speed: payload };
     case 'alter-size': {
