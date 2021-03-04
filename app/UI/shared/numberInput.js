@@ -28,8 +28,11 @@ const useStyles = (theme, mobile = false) => {
   });
 };
 
-export const NumberInput = ({ setNewData, clearCustom, isCustom, theme, css }) => {
-  const clearObj = { valid: true, validNums: [] };
+const inputError = 'Enter numbers from 1-100. (e.g. 22, 45, 6)';
+const limitError = 'Custom number total must not exceed 50.';
+
+export const NumberInput = ({ newData, clear, isCustom, theme, css, nums }) => {
+  const clearObj = { valid: true, limitExceeded: false, validNums: [] };
   const [numState, setNumState] = useState(clearObj);
   const inputRef = useRef(null);
   const mobile = useMediaQuery('only screen and (max-width: 1049px)');
@@ -40,14 +43,14 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme, css }) =
     inputRef.current.value = '';
     if (numState.validNums.length > 0) {
       setNumState(clearObj);
-      setNewData(numState.validNums);
+      newData(numState.validNums);
     }
   };
 
-  const clear = () => {
+  const clearInput = () => {
     inputRef.current.value = '';
     setNumState(clearObj);
-    clearCustom();
+    clear();
   };
 
   return (
@@ -59,12 +62,12 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme, css }) =
     >
       <TextField
         error={!numState.valid}
-        helperText={!numState.valid ? 'Enter numbers from 1-100. (e.g. 22, 45, 6)' : ''}
+        helperText={numState.limitExceeded ? limitError : !numState.valid ? inputError : ''}
         label="Custom Data:"
         placeholder="Enter numbers from 1-100"
         size="small"
         inputRef={inputRef}
-        onChange={event => setNumState({ ...isValidNumbers(event.target.value) })}
+        onChange={event => setNumState({ ...isValidNumbers(event.target.value, nums) })}
         style={css}
         InputLabelProps={{
           style: { color },
@@ -87,7 +90,7 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme, css }) =
               </InputAdornment>
               <Divider orientation="vertical" flexItem classes={{ root: classes.divider }} />
               <InputAdornment>
-                <IconButton disabled={!isCustom} onClick={clear}>
+                <IconButton disabled={!isCustom} onClick={clearInput}>
                   <Close style={{ fontSize: '1.1em', fill: isCustom ? color : theme.input.disabled }} />
                 </IconButton>
               </InputAdornment>

@@ -1,6 +1,5 @@
 .container {
   height: 15vh;
-  background-color: burlywood;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: 75% 25%;

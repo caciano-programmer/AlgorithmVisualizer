@@ -21,6 +21,11 @@ export const themes = {
     sidebar: { background: 'rgba(33, 33, 33, .95)', color: darkMain },
     control: darkMain,
     code: { keywords: darkMain, comments: '#3d3d3d', separators: '#5e5e5e', functions: '#9bd5ff', others: 'white' },
+    bar: { border: '#1a0d70', color: darkMain, transition: '#a6c5d3' },
+    graph: 'rgba(255, 255, 255, .35)',
+    progress: { base: '#a6c5d3', secondary: darkMain },
+    controlDisabled: 'rgba(25, 118, 210, .15)',
+    controlHover: 'rgba(25, 118, 210, .05)',
   },
 
   light: {
@@ -42,6 +47,11 @@ export const themes = {
     sidebar: { background: 'rgba(224, 224, 224, .85)', color: lightMain },
     control: lightMain,
     code: { keywords: lightMain, comments: '#cccccc', separators: '#6330bc', functions: '#8191f0', others: '#282828' },
+    bar: { border: lightMain, color: 'rgba(8, 58, 140, .175)', transition: lightMain },
+    graph: 'rgba(0, 0, 0, 0.25)',
+    progress: { base: 'rgba(8, 58, 140, .175)', secondary: lightMain },
+    controlDisabled: '#bdbdbd',
+    controlHover: 'rgba(8, 58, 140, .1)',
   },
 };
 

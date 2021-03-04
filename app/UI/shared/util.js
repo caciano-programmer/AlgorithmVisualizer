@@ -1,5 +1,6 @@
-export function isValidNumbers(input) {
+export function isValidNumbers(input, nums) {
   let valid = true;
+  let limitExceeded = false;
   if (input.length === 0) return { valid, validNums: [] };
   const validNums = input
     .split(/\s+|,+/)
@@ -10,5 +11,9 @@ export function isValidNumbers(input) {
       return validEl;
     })
     .map(el => +el);
-  return { valid, validNums: valid ? validNums : [] };
+  if (validNums.length + nums > 50) {
+    valid = false;
+    limitExceeded = true;
+  }
+  return { valid, limitExceeded, validNums: valid ? validNums : [] };
 }

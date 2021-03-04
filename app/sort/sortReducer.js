@@ -1,6 +1,6 @@
 import { InitialState, INSTRUCTIONS, randomArrayGenerator, STATES } from '../config/AppConstants';
 import { themes } from '../theme/theme';
-import { findAdjustedSpeed, getStateFromLocalStorage } from './sortUtil';
+import { findAdjustedSpeed } from './sortUtil';
 
 export function configReducer(state, { type, payload }) {
   const instructionType = state.instruction.type;
@@ -13,7 +13,8 @@ export function configReducer(state, { type, payload }) {
   switch (type) {
     case 'toggle-theme': {
       const theme = state.theme.isDark ? themes.light : themes.dark;
-      return { ...state, state: STATES.STOP, theme };
+      const adjustedState = state.state === STATES.GO ? STATES.STOP : state.state;
+      return { ...state, state: adjustedState, theme };
     }
     case 'localStorage':
       return payload || state;
@@ -26,7 +27,7 @@ export function configReducer(state, { type, payload }) {
       return { ...state, algorithm: payload, data, progress: 0, state: STATES.STOP, pointer: 0 };
     }
     case 'new-data': {
-      const overflow = payload.length > 100 || (state.custom && state.data.current.length + payload.length > 100);
+      const overflow = payload.length > 50 || (state.custom && state.data.current.length + payload.length > 50);
       const current = state.custom ? [...state.data.current, ...payload] : [...payload];
       const data = { ...state.algorithm.func(current), current };
       const size = data.start.length;

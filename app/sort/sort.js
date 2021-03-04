@@ -28,6 +28,7 @@ export const Sort = () => {
         state={config.state}
         setState={payload => dispatch({ type: 'change-state', payload })}
         toggleTheme={() => dispatch({ type: 'toggle-theme' })}
+        customNumTotal={config.custom ? config.data.current.length : 0}
       />
       <MemoizedChart
         state={config.state}

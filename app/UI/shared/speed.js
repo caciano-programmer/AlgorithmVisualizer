@@ -6,7 +6,7 @@ import { MyTheme } from '../../theme/theme';
 const useStyles = theme =>
   makeStyles({
     text: { color: theme.control, fontWeight: 'bold' },
-    slider: { color: theme.control },
+    slider: { color: theme.control, '&.Mui-disabled': { color: theme.controlDisabled } },
   });
 
 export const Speed = ({ speed, css, disabled, setSpeed, size }) => {

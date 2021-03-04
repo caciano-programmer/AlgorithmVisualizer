@@ -1,4 +1,7 @@
+/* eslint-disable react/no-danger */
+
 import React, { useContext } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { makeStyles } from '@material-ui/core';
 import Highlighter from 'react-highlight-words';
 import { code, specialCharacters } from './util';
@@ -8,6 +11,13 @@ const rawCode = code();
 const { all, keywords, functions, comments } = specialCharacters();
 const lightHighlight = highlight(themes.light);
 const darkHighlight = highlight(themes.dark);
+
+const lightJsx = ReactDOMServer.renderToString(
+  <Highlighter textToHighlight={rawCode} searchWords={all} caseSensitive autoEscape highlightTag={lightHighlight} />,
+);
+const darkJsx = ReactDOMServer.renderToString(
+  <Highlighter textToHighlight={rawCode} searchWords={all} caseSensitive autoEscape highlightTag={darkHighlight} />,
+);
 
 const useStyles = theme =>
   makeStyles({
@@ -21,14 +31,6 @@ const useStyles = theme =>
     },
   });
 
-const Light = React.memo(() => (
-  <Highlighter textToHighlight={rawCode} searchWords={all} caseSensitive autoEscape highlightTag={lightHighlight} />
-));
-
-const Dark = React.memo(() => (
-  <Highlighter textToHighlight={rawCode} searchWords={all} caseSensitive autoEscape highlightTag={darkHighlight} />
-));
-
 export const CodeText = React.memo(() => {
   const theme = useContext(MyTheme);
   const classes = useStyles(theme)();
@@ -36,7 +38,10 @@ export const CodeText = React.memo(() => {
   return (
     <pre>
       <code>
-        <div className={classes.code}>{theme.isDark ? <Dark /> : <Light />}</div>
+        <div
+          className={classes.code}
+          dangerouslySetInnerHTML={theme.isDark ? { __html: darkJsx } : { __html: lightJsx }}
+        />
       </code>
     </pre>
   );

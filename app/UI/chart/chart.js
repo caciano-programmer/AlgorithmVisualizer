@@ -1,13 +1,36 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Spring } from 'react-spring/renderprops';
+import { makeStyles } from '@material-ui/core';
 import { step, getIntervals, mergeStep, indexInsideStep, getBarValue } from './chartUtil';
 import { INSTRUCTIONS, STATES } from '../../config/AppConstants';
+import { MyTheme } from '../../theme/theme';
 
 import styles from './chart.module.css';
 
+const useStyles = theme =>
+  makeStyles({
+    container: { backgroundColor: theme.background },
+    bar: {
+      borderLeft: `1px solid ${theme.bar.border}`,
+      borderRight: `1px solid ${theme.bar.border}`,
+      borderTop: `1px solid ${theme.bar.border}`,
+      backgroundColor: theme.bar.color,
+    },
+    chart: {
+      borderLeft: `1px solid ${theme.graph}`,
+      borderBottom: `1px solid ${theme.graph}`,
+    },
+    ticks: {
+      color: theme.graph,
+    },
+  });
+
 const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMerge }) => {
+  const theme = useContext(MyTheme);
+  const classes = useStyles(theme)();
+  const barStyle = `${styles.bar} ${classes.bar}`;
   const intervals = getIntervals(Math.max(...data));
   const largestTick = Math.max(...intervals);
   const stepFunc = isMerge ? mergeStep : step;
@@ -28,32 +51,32 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
   }, [instruction]);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${classes.container}`}>
       <div className={styles.ticks}>
         {intervals.map((el, index) => (
           <div
             className={`${styles.tick} ${index === intervals.length - 1 ? styles.topTick : ''} 
-            ${index === 0 ? styles.bottomTick : ''}`}
+            ${index === 0 ? styles.bottomTick : ''} ${classes.ticks}`}
             key={new Date().getTime() + index}
           >
             {el}&ndash;
           </div>
         ))}
       </div>
-      <div className={styles.chart}>
+      <div className={`${styles.chart} ${classes.chart}`}>
         {data.map((el, index) => {
           const key = new Date().getTime() + index;
-          const from = { height: `${(el / largestTick) * 65}vh`, backgroundColor: 'red' };
+          const from = { height: `${(el / largestTick) * 65}vh`, backgroundColor: theme.bar.transition };
           if ((inProgress || state === STATES.GO) && indexInsideStep(steps[pointer], index)) {
             const value = getBarValue(steps[pointer], data, index, isPrevious, el);
-            const to = { height: `${(value / largestTick) * 65}vh`, backgroundColor: 'rgb(224, 40, 40, 0.2)' };
+            const to = { height: `${(value / largestTick) * 65}vh`, backgroundColor: theme.bar.color };
             return (
               <Spring key={key} from={from} to={to} config={{ duration: speed - 5 }}>
-                {props => <div className={styles.bar} style={props} />}
+                {props => <div className={`${barStyle}`} style={props} />}
               </Spring>
             );
           }
-          return <div className={styles.bar} style={{ height: from.height }} key={key} />;
+          return <div className={`${barStyle}`} style={{ height: from.height }} key={key} />;
         })}
       </div>
     </div>

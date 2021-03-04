@@ -38,6 +38,7 @@ export const Header = ({
   setSpeed,
   setState,
   toggleTheme,
+  customNumTotal,
 }) => {
   const theme = useContext(MyTheme);
   const [animate, toggleAnimate] = useState('');
@@ -57,7 +58,7 @@ export const Header = ({
         <AlgorithmSelect theme={theme} setAlgorithm={setAlgorithm} algorithm={algorithm} toggleCode={toggleCode} />
       </div>
       <div className={`${styles.flexItem} ${styles.custom}`}>
-        <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} theme={theme} />
+        <NumberInput newData={setNewData} clear={clearCustom} isCustom={isCustom} theme={theme} nums={customNumTotal} />
       </div>
       <div className={`${styles.flexItem} ${styles.theme}`}>
         <Switch
