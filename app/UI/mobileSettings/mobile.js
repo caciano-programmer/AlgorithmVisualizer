@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { SwipeableDrawer as Sidebar } from '@material-ui/core';
 import { PrimaryList } from './primaryList';
 import { SecondaryList } from './secondaryList';
+import { MyTheme } from '../../theme/theme';
 
-const useStyles = makeStyles({
-  paper: {
-    height: '100%',
-    width: '80vw',
-    backgroundColor: 'gray',
-  },
-});
+const useStyles = theme =>
+  makeStyles({
+    paper: {
+      height: '100%',
+      width: '80vw',
+      backgroundColor: theme.sidebar.background,
+      color: theme.sidebar.color,
+    },
+  });
 
 const Mobile = ({
   toggleMobile,
@@ -25,9 +28,11 @@ const Mobile = ({
   setSize,
   speed,
   setSpeed,
+  toggleTheme,
 }) => {
   const [algorithmOptions, toggleAlgorithmOptions] = useState(false);
-  const classes = useStyles();
+  const theme = useContext(MyTheme);
+  const classes = useStyles(theme)();
   return (
     <Sidebar
       anchor="right"
@@ -54,9 +59,13 @@ const Mobile = ({
             setSize={setSize}
             speed={speed}
             setSpeed={setSpeed}
+            theme={theme}
+            toggleTheme={toggleTheme}
           />
         )}
-        {algorithmOptions && <SecondaryList toggle={toggleAlgorithmOptions} setAlgorithm={setAlgorithm} />}
+        {algorithmOptions && (
+          <SecondaryList toggle={toggleAlgorithmOptions} setAlgorithm={setAlgorithm} theme={theme} />
+        )}
       </div>
     </Sidebar>
   );

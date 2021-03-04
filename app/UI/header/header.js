@@ -1,5 +1,5 @@
-import React, { useState, Suspense, useContext } from 'react';
-import { makeStyles, Switch } from '@material-ui/core';
+import React, { useState, Suspense, useContext, useCallback } from 'react';
+import { IconButton, makeStyles, Switch } from '@material-ui/core';
 import { Settings, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
 import { NumberInput } from '../shared/numberInput';
 import { APP_NAME, STATES } from '../../config/AppConstants';
@@ -23,6 +23,7 @@ const useStyles = theme =>
         '&.MuiSwitch-colorSecondary&.Mui-checked': { color: `${theme.brand} !important` },
       },
     },
+    settingsHover: { '&:hover': { backgroundColor: theme.settingsHover } },
   });
 
 export const Header = ({
@@ -68,18 +69,19 @@ export const Header = ({
         />
       </div>
       <div className={`${styles.flexItem} ${styles.settings}`}>
-        <Settings
-          className={animate}
+        <IconButton
           onClick={() => {
             setState(STATES.STOP);
             toggleAnimate(styles.settingsIcon);
             setTimeout(() => toggleMobile(true), 400);
           }}
-          onAnimationEnd={() => toggleAnimate('')}
-        />
+          classes={{ root: classes.settingsHover }}
+        >
+          <Settings className={animate} onAnimationEnd={() => toggleAnimate('')} style={{ fill: theme.brand }} />
+        </IconButton>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-        <CodeComponent toggleCode={() => toggleCode(false)} code={code} />
+        <CodeComponent toggleCode={useCallback(() => toggleCode(false), [])} code={code} />
         <MobileComponent
           toggleMobile={(boolean = false) => toggleMobile(boolean)}
           open={mobile}
@@ -93,6 +95,7 @@ export const Header = ({
           setSize={setSize}
           speed={speed}
           setSpeed={setSpeed}
+          toggleTheme={toggleTheme}
         />
       </Suspense>
     </header>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardArrowRight, Brightness4Outlined as Moon, WbSunnyOutlined as Sun } from '@material-ui/icons';
+import { KeyboardArrowRight } from '@material-ui/icons';
 import { Divider, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import { NumberInput } from '../shared/numberInput';
 import { Speed } from '../shared/speed';
@@ -7,18 +7,7 @@ import { Size } from '../shared/size';
 
 const useStyles = makeStyles({
   controls: { width: '100%', textAlign: 'center', margin: '0 15% 0 15%' },
-  themeContainer: { height: '6vh', width: '80vw' },
-  themeOption: { height: '100%', display: 'inline-block', minWidth: '49%' },
-  themeLight: { backgroundColor: 'yellow' },
-  themeDark: { backgroundColor: 'purple' },
-  themeDivider: {
-    backgroundColor: 'gray',
-    height: '100%',
-    minWidth: '2%',
-    display: 'inline-block',
-  },
-  themeListItem: { padding: 0 },
-  icon: { margin: '.5vh 0 0 1vw' },
+  current: { fontWeight: 'bolder' },
 });
 
 export const PrimaryList = ({
@@ -34,20 +23,38 @@ export const PrimaryList = ({
   setSize,
   speed,
   setSpeed,
+  theme,
+  toggleTheme,
 }) => {
   const classes = useStyles();
+
+  const viewCode = () => {
+    toggleMobile();
+    code();
+  };
+
+  const changeTheme = () => {
+    toggleMobile();
+    toggleTheme();
+  };
+
   return (
     <List>
       <ListItem>
-        <ListItemText primary={algo} />
+        <ListItemText primary={`Algorithm: ${algo}`} classes={{ primary: classes.current }} />
       </ListItem>
-      <Divider />
+      <Divider style={{ backgroundColor: theme.sidebar.color, height: '.2vh' }} />
+      <ListItem button onClick={changeTheme}>
+        <ListItemText primary={theme.isDark ? 'Light Mode' : 'Dark Mode'} />
+        <KeyboardArrowRight />
+      </ListItem>
+      <ListItem button onClick={viewCode}>
+        <ListItemText primary="View Algorithm Code" />
+        <KeyboardArrowRight />
+      </ListItem>
       <ListItem button onClick={() => toggleAlgoOptions(!algoOptions)}>
         <ListItemText primary="Change Algorithm" />
         {!algoOptions && <KeyboardArrowRight />}
-      </ListItem>
-      <ListItem button>
-        <NumberInput setNewData={setNewData} clearCustom={clearCustom} isCustom={isCustom} />
       </ListItem>
       <ListItem button>
         <Speed css={classes.controls} speed={speed} setSpeed={setSpeed} size={size} disabled={false} />
@@ -56,24 +63,13 @@ export const PrimaryList = ({
         <Size css={classes.controls} size={size} setSize={setSize} disabled={false} />
       </ListItem>
       <ListItem button>
-        <ListItemText
-          primary="Algorithm Code"
-          onClick={() => {
-            code();
-            toggleMobile();
-          }}
+        <NumberInput
+          setNewData={setNewData}
+          clearCustom={clearCustom}
+          isCustom={isCustom}
+          theme={theme}
+          css={{ width: '100%' }}
         />
-      </ListItem>
-      <ListItem button classes={{ root: classes.themeListItem }}>
-        <div className={classes.themeContainer}>
-          <div className={`${classes.themeOption} ${classes.themeDark}`}>
-            <Moon classes={{ root: classes.icon }} />
-          </div>
-          <div className={classes.themeDivider} />
-          <div className={`${classes.themeOption} ${classes.themeLight}`}>
-            <Sun classes={{ root: classes.icon }} />
-          </div>
-        </div>
       </ListItem>
     </List>
   );

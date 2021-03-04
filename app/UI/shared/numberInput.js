@@ -1,28 +1,40 @@
 import React, { useRef, useState } from 'react';
-import { TextField, InputAdornment, Divider, IconButton, ClickAwayListener, makeStyles } from '@material-ui/core';
+import {
+  TextField,
+  InputAdornment,
+  Divider,
+  IconButton,
+  ClickAwayListener,
+  makeStyles,
+  useMediaQuery,
+} from '@material-ui/core';
 import { Add, Close } from '@material-ui/icons';
 import { isValidNumbers } from './util';
 
-const useStyles = theme =>
-  makeStyles({
-    primary: { color: theme.input.color },
-    nativeInput: { '&::placeholder': { color: theme.input.color } },
+const useStyles = (theme, mobile = false) => {
+  const color = mobile ? theme.inputMobile.color : theme.input.color;
+  return makeStyles({
+    primary: { color },
+    nativeInput: { '&::placeholder': { color, fontSize: '.75em' } },
     underline: {
-      borderBottom: `solid 1px ${theme.input.color}`,
-      '&::after': { borderBottom: `solid 1px ${theme.input.color}` },
+      borderBottom: `solid 1px ${color}`,
+      '&::after': { borderBottom: `solid 1px ${color}` },
       '&&&::before': { borderBottom: 'none' },
-      '&.Mui-error&::after': { borderBottom: `solid 1px ${theme.input.color}` },
+      '&.Mui-error&::after': { borderBottom: `solid 1px ${color}` },
     },
-    formHelperText: { '&.Mui-error': { color: theme.input.color } },
-    divider: { backgroundColor: theme.input.color },
+    formHelperText: { '&.Mui-error': { color } },
+    divider: { backgroundColor: color },
     icon: { '&:hover': { backgroundColor: theme.input.hover } },
   });
+};
 
-export const NumberInput = ({ setNewData, clearCustom, isCustom, theme }) => {
+export const NumberInput = ({ setNewData, clearCustom, isCustom, theme, css }) => {
   const clearObj = { valid: true, validNums: [] };
   const [numState, setNumState] = useState(clearObj);
   const inputRef = useRef(null);
-  const classes = useStyles(theme)();
+  const mobile = useMediaQuery('only screen and (max-width: 1049px)');
+  const classes = useStyles(theme, mobile)();
+  const color = mobile ? theme.inputMobile.color : theme.input.color;
 
   const add = () => {
     inputRef.current.value = '';
@@ -53,8 +65,9 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme }) => {
         size="small"
         inputRef={inputRef}
         onChange={event => setNumState({ ...isValidNumbers(event.target.value) })}
+        style={css}
         InputLabelProps={{
-          style: { color: theme.input.color },
+          style: { color },
         }}
         FormHelperTextProps={{ classes: { error: classes.formHelperText } }}
         InputProps={{
@@ -67,7 +80,7 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme }) => {
                   <Add
                     style={{
                       fontSize: '1.1em',
-                      fill: numState.validNums.length > 0 ? theme.input.color : theme.input.disabled,
+                      fill: numState.validNums.length > 0 ? color : theme.input.disabled,
                     }}
                   />
                 </IconButton>
@@ -75,7 +88,7 @@ export const NumberInput = ({ setNewData, clearCustom, isCustom, theme }) => {
               <Divider orientation="vertical" flexItem classes={{ root: classes.divider }} />
               <InputAdornment>
                 <IconButton disabled={!isCustom} onClick={clear}>
-                  <Close style={{ fontSize: '1.1em', fill: isCustom ? theme.input.color : theme.input.disabled }} />
+                  <Close style={{ fontSize: '1.1em', fill: isCustom ? color : theme.input.disabled }} />
                 </IconButton>
               </InputAdornment>
             </>

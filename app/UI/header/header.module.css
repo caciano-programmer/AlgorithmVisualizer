@@ -15,6 +15,13 @@
   margin-bottom: 1vh;
   flex-basis: 0;
 }
+.choose,
+.custom {
+  margin-bottom: 3.5vh;
+}
+.theme {
+  margin-bottom: 2.5vh;
+}
 .name {
   flex-grow: 3;
   font-size: 2.25em;
@@ -22,9 +29,11 @@
   padding-left: 5%;
   font-weight: 600;
   font-family: 'Lobster Two', cursive;
+  margin-bottom: 2.5vh;
 }
 .settings {
   flex-grow: 1;
+  margin-bottom: 1.5vh;
 }
 
 @media only screen and (max-width: 1049px) {
@@ -42,19 +51,15 @@
   }
   .name {
     flex-grow: 2;
-    margin-bottom: 2.5vh;
   }
   .custom {
     flex-grow: 3.5;
-    margin-bottom: 3.5vh;
   }
   .choose {
-    flex-grow: 1.125;
-    margin-bottom: 3.5vh;
+    flex-grow: 1.5;
   }
   .theme {
     flex-grow: 1.5;
-    margin-bottom: 2.5vh;
     margin-right: 2vw;
   }
 }
