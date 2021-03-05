@@ -43,7 +43,7 @@ export const PrimaryList = ({
       <ListItem>
         <ListItemText primary={`Algorithm: ${algo}`} classes={{ primary: classes.current }} />
       </ListItem>
-      <Divider style={{ backgroundColor: theme.sidebar.color, height: '.2vh' }} />
+      <Divider style={{ backgroundColor: theme.sidebar.color, height: '2px' }} />
       <ListItem button onClick={changeTheme}>
         <ListItemText primary={theme.isDark ? 'Light Mode' : 'Dark Mode'} />
         <KeyboardArrowRight />

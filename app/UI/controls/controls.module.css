@@ -1,5 +1,5 @@
 .container {
-  height: 15vh;
+  height: 15%;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: 75% 25%;

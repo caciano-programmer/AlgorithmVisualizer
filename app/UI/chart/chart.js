@@ -66,10 +66,10 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
       <div className={`${styles.chart} ${classes.chart}`}>
         {data.map((el, index) => {
           const key = new Date().getTime() + index;
-          const from = { height: `${(el / largestTick) * 65}vh`, backgroundColor: theme.bar.transition };
+          const from = { height: `${(el / largestTick) * 100}%`, backgroundColor: theme.bar.transition };
           if ((inProgress || state === STATES.GO) && indexInsideStep(steps[pointer], index)) {
             const value = getBarValue(steps[pointer], data, index, isPrevious, el);
-            const to = { height: `${(value / largestTick) * 65}vh`, backgroundColor: theme.bar.color };
+            const to = { height: `${(value / largestTick) * 100}%`, backgroundColor: theme.bar.color };
             return (
               <Spring key={key} from={from} to={to} config={{ duration: speed - 5 }}>
                 {props => <div className={`${barStyle}`} style={props} />}

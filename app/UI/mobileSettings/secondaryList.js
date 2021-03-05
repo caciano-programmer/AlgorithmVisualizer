@@ -14,7 +14,7 @@ export const SecondaryList = ({ toggle, setAlgorithm, theme }) => {
       <ListItem button onClick={() => toggle(false)}>
         <ArrowBack fontSize="large" />
       </ListItem>
-      <Divider style={{ backgroundColor: theme.sidebar.color, height: '.2vh' }} />
+      <Divider style={{ backgroundColor: theme.sidebar.color, height: '2px' }} />
       {Object.values(SORT_ALGORITHMS).map(el => (
         <ListItem button key={el.name} onClick={() => changeAlgorithm(el)}>
           <ListItemText primary={el.name} />
