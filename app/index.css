@@ -1,16 +1,14 @@
 /* Global styles go here */
 
 html,
-body,
+body {
+  height: 100%;
+  width: 100%;
+  height: -webkit-fill-available;
+  margin: 0;
+  padding: 0;
+}
 body #root {
   height: 100%;
   width: 100%;
-  height: -moz-available;
-  height: -webkit-fill-available;
-  height: fill-available;
-  width: -moz-available;
-  width: -webkit-fill-available;
-  width: fill-available;
-  margin: 0;
-  padding: 0;
 }
