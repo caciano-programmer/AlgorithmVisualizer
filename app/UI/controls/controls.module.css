@@ -11,9 +11,17 @@
   align-self: center;
 }
 .progress {
-  align-self: end;
   margin-left: 20%;
   margin-right: 20%;
+}
+
+@media only screen and (max-height: 500px) {
+  .progress {
+    margin-left: 27.5%;
+    margin-right: 27.5%;
+    align-self: end;
+    margin-bottom: 1.5vh;
+  }
 }
 
 @media only screen and (max-width: 1049px) {

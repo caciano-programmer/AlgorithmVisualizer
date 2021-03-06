@@ -7,7 +7,11 @@ import { SORT_ALGORITHMS } from './sortAlgorithms';
 import { configReducer } from './sortReducer';
 import { useReducerMiddleware, saveLocalStorage, intercept, getStateFromLocalStorage } from './sortUtil';
 import { MyTheme } from '../theme/theme';
+
 // TODO check for cases where memo, usememo, usecallback can be used
+// TODO check and complete lighthouse suggestions
+// FIXME landscape mode on mobile looks bad
+
 export const Sort = () => {
   const [config, dispatch] = useReducerMiddleware(InitialState, configReducer, saveLocalStorage);
 

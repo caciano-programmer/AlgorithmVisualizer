@@ -35,6 +35,12 @@
   margin-bottom: 1.25%;
 }
 
+@media only screen and (max-height: 500px) {
+  .flexItem {
+    margin-bottom: 0;
+  }
+}
+
 @media only screen and (max-width: 1049px) {
   .choose,
   .custom,

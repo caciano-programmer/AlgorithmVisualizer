@@ -95,11 +95,10 @@ export const Controls = ({
           </IconButton>
         </div>
       </div>
-      <div className={`${styles.gridItem}`}>
+      <div className={`${styles.gridItem} ${styles.progress}`}>
         <Progress
           variant="determinate"
           value={progress}
-          className={`${styles.progress}`}
           classes={{ root: classes.progressBase, bar: classes.progressSecondary }}
         />
       </div>
