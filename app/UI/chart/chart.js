@@ -41,7 +41,6 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
   useEffect(() => {
     let id = null;
     const limit = state === STATES.GO ? steps.length - pointer : 1;
-    console.log(limit);
     if (state === STATES.GO || (inProgress && (type === INSTRUCTIONS.NEXT || isPrevious)))
       id = stepFunc(data, setData, pointer, steps, adjustedSpeed, limit, isPrevious);
     return () => clearInterval(id);
