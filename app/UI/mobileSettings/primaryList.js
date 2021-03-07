@@ -25,6 +25,7 @@ export const PrimaryList = ({
   setSpeed,
   theme,
   toggleTheme,
+  customNumTotal,
 }) => {
   const classes = useStyles();
 
@@ -64,11 +65,12 @@ export const PrimaryList = ({
       </ListItem>
       <ListItem button>
         <NumberInput
-          setNewData={setNewData}
-          clearCustom={clearCustom}
+          newData={setNewData}
+          clear={clearCustom}
           isCustom={isCustom}
           theme={theme}
           css={{ width: '100%' }}
+          nums={customNumTotal}
         />
       </ListItem>
     </List>

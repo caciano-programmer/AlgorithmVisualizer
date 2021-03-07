@@ -97,6 +97,7 @@ export const Header = ({
           speed={speed}
           setSpeed={setSpeed}
           toggleTheme={toggleTheme}
+          customNumTotal={customNumTotal}
         />
       </Suspense>
     </header>

@@ -17,7 +17,9 @@ const uuid = uuidv4();
 function FilesListPlugin() {}
 FilesListPlugin.prototype.apply = compiler => {
   compiler.hooks.emit.tapAsync('FileListPlugin', (compilation, callback) => {
-    const filelist = Object.keys(compilation.assets).map(fileName => `'${fileName}'`);
+    const filelist = Object.keys(compilation.assets)
+      .map(fileName => `'${fileName}'`)
+      .filter(fileName => !/.*(screenshots\/|\.serviceWorker\.js)/.test(fileName));
     compilation.assets['filesList.js'] = {
       source: () => `const getFilesList = () => [${filelist}]`,
       size: () => filelist.length,
@@ -93,6 +95,7 @@ module.exports = {
       patterns: [
         { from: `${App}/public/icons`, to: `${Dest}/icons` },
         { from: `${App}/manifest.json`, to: `${Dest}/manifest.json` },
+        { from: `${path.resolve(__dirname, '../screenshots')}`, to: `${Dest}/screenshots` },
       ],
     }),
     new FilesListPlugin(),

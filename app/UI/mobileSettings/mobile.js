@@ -29,6 +29,7 @@ const Mobile = ({
   speed,
   setSpeed,
   toggleTheme,
+  customNumTotal,
 }) => {
   const [algorithmOptions, toggleAlgorithmOptions] = useState(false);
   const theme = useContext(MyTheme);
@@ -61,6 +62,7 @@ const Mobile = ({
             setSpeed={setSpeed}
             theme={theme}
             toggleTheme={toggleTheme}
+            customNumTotal={customNumTotal}
           />
         )}
         {algorithmOptions && (
