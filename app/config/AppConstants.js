@@ -6,6 +6,7 @@ export const APP_NAME = 'SortVisualizer';
 // Animation duration in ms, scales with array size
 export const maxSpeed = arraySize => Math.floor((10 / arraySize) * 300 + 20);
 export const minSpeed = arraySize => maxSpeed(arraySize) * 8;
+export const STEP_SPEED = 1000;
 
 const DEFAULT_ARRAY_SIZE = 25;
 const DEFAULT_ARRAY_SPEED = Math.floor(maxSpeed(DEFAULT_ARRAY_SIZE) * 4);

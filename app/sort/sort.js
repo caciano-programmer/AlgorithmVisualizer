@@ -10,7 +10,7 @@ import { MyTheme } from '../theme/theme';
 
 // TODO check for cases where memo, usememo, usecallback can be used
 // TODO check and complete lighthouse suggestions
-// FIXME landscape mode on mobile looks bad
+// FIXME mergesort sorting wrong after hitting play after a previous step
 
 export const Sort = () => {
   const [config, dispatch] = useReducerMiddleware(InitialState, configReducer, saveLocalStorage);

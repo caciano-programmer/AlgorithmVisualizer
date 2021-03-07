@@ -90,7 +90,10 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
     new CopyPlugin({
-      patterns: [{ from: `${App}/public/icons`, to: `${Dest}/icons` }],
+      patterns: [
+        { from: `${App}/public/icons`, to: `${Dest}/icons` },
+        { from: `${App}/manifest.json`, to: `${Dest}/manifest.json` },
+      ],
     }),
     new FilesListPlugin(),
   ],

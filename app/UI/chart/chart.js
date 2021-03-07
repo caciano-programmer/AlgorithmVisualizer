@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { Spring } from 'react-spring/renderprops';
 import { makeStyles } from '@material-ui/core';
 import { step, getIntervals, mergeStep, indexInsideStep, getBarValue } from './chartUtil';
-import { INSTRUCTIONS, STATES } from '../../config/AppConstants';
+import { INSTRUCTIONS, STATES, STEP_SPEED } from '../../config/AppConstants';
 import { MyTheme } from '../../theme/theme';
 
 import styles from './chart.module.css';
@@ -32,21 +32,18 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
   const classes = useStyles(theme)();
   const barStyle = `${styles.bar} ${classes.bar}`;
   const intervals = getIntervals(Math.max(...data));
+  const adjustedSpeed = state === STATES.GO ? speed : STEP_SPEED;
   const largestTick = Math.max(...intervals);
   const stepFunc = isMerge ? mergeStep : step;
   const { type, inProgress } = instruction;
   const isPrevious = type === INSTRUCTIONS.PREVIOUS;
-  let id = null;
 
   useEffect(() => {
-    const limit = steps.length - pointer;
-    if (state === STATES.GO) id = stepFunc(data, setData, pointer, steps, speed, limit, isPrevious);
-    return () => clearInterval(id);
-  }, [state]);
-
-  useEffect(() => {
-    if (inProgress && (type === INSTRUCTIONS.NEXT || isPrevious))
-      id = stepFunc(data, setData, pointer, steps, speed, 1, isPrevious);
+    let id = null;
+    const limit = state === STATES.GO ? steps.length - pointer : 1;
+    console.log(limit);
+    if (state === STATES.GO || (inProgress && (type === INSTRUCTIONS.NEXT || isPrevious)))
+      id = stepFunc(data, setData, pointer, steps, adjustedSpeed, limit, isPrevious);
     return () => clearInterval(id);
   }, [instruction]);
 
@@ -71,7 +68,7 @@ const Chart = ({ state, data, steps, pointer, setData, speed, instruction, isMer
             const value = getBarValue(steps[pointer], data, index, isPrevious, el);
             const to = { height: `${(value / largestTick) * 100}%`, backgroundColor: theme.bar.color };
             return (
-              <Spring key={key} from={from} to={to} config={{ duration: speed - 5 }}>
+              <Spring key={key} from={from} to={to} config={{ duration: adjustedSpeed - 5 }}>
                 {props => <div className={`${barStyle}`} style={props} />}
               </Spring>
             );

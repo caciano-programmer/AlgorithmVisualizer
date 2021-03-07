@@ -18,8 +18,10 @@ export function configReducer(state, { type, payload }) {
     }
     case 'localStorage':
       return payload || state;
-    case 'change-state':
-      return noSteps ? sortedState : { ...state, state: payload };
+    case 'change-state': {
+      const instruction = payload === STATES.GO ? { type: INSTRUCTIONS.NEXT, inProgress: true } : state.instruction;
+      return noSteps ? sortedState : { ...state, state: payload, instruction };
+    }
     case 'instruction':
       return noSteps ? sortedState : instructionReducer(state, payload);
     case 'change-algorithm': {
