@@ -3,7 +3,7 @@
 An PWA to visualize and interact with some of the most commonly used sorting algorithms.
 Some of the things you can do with this app:
 * See the steps the algorithm takes in real time
-* Pause execution and more forward or backwards through steps
+* Pause execution and move forward or backwards through steps
 * Choose one of six sorting algorithms offered
 * Change the speed or size of the data to be sorted
 * Create your own dataset
